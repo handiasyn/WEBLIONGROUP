@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lion Group Event App</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --red-a:#CF0206;
+    --red-b:#ED1C24;
+    --ink:#000000;
+    --gray:#696969;
+    --card-shadow:0px 0px 12px rgba(0,0,0,0.08);
+    --nav-shadow:0px -4px 12px rgba(0,0,0,0.04);
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    background:#e9e9e9;
+    font-family:'Plus Jakarta Sans', sans-serif;
+    display:flex;
+    justify-content:center;
+    padding:24px 0;
+  }
+  .phone{
+    width:375px;
+    max-width:100vw;
+    height:812px;
+    background:linear-gradient(180deg, rgba(255,0,10,0.15) 0%, rgba(248,248,248,0.15) 100%), #fff;
+    border-radius:44px;
+    overflow:hidden;
+    box-shadow:0 30px 60px rgba(0,0,0,0.25);
+    position:relative;
+  }
+  .screen{
+    height:100%;
+    overflow-y:auto;
+    -ms-overflow-style:none;
+    scrollbar-width:none;
+    padding-bottom:110px;
+  }
+  .screen::-webkit-scrollbar{display:none;}
+
+  .lion-glow{
+    position:absolute; right:-30px; top:35px; width:227px; height:227px;
+    opacity:0.30; border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, var(--red-b) 0%, transparent 70%);
+    pointer-events:none;
+  }
+
+  .statusbar{
+    display:flex; justify-content:space-between; align-items:center;
+    padding:18px 24px 6px;
+    font-size:15px; font-weight:600; color:var(--ink);
+    position:relative; z-index:2;
+  }
+  .statusbar .icons{display:flex; gap:6px; align-items:center; font-size:12px;}
+
+  .content{
+    padding:22px 16px 4px;
+    position:relative; z-index:2;
+  }
+  .greeting{ font-size:14px; color:#000; font-weight:600; }
+  .section-title{
+    font-size:22px; font-weight:800; color:#000; margin:20px 0 12px;
+  }
+  .section-title:first-of-type{ margin-top:20px; }
+
+  /* icon helpers */
+  .icon{ width:16px; height:16px; flex-shrink:0; display:flex; align-items:center; justify-content:center; color:var(--red-a); }
+  .icon svg{ width:16px; height:16px; }
+  .meta-row{ display:flex; align-items:center; gap:4px; }
+  .meta-text{ font-size:12px; font-weight:500; color:#000; font-family:'Poppins', sans-serif; letter-spacing:0.3px; }
+
+  .detail-btn{
+    min-width:80px; padding:10px 20px; border:none; border-radius:12px;
+    background:linear-gradient(0deg, var(--red-a) 0%, var(--red-b) 100%);
+    color:#fff; font-family:'Plus Jakarta Sans', sans-serif; font-weight:700; font-size:12px;
+    cursor:pointer; flex-shrink:0;
+    transition:transform .12s ease;
+  }
+  .detail-btn:active{ transform:scale(0.94); }
+
+  /* Grand event card */
+  .grand-card{
+    background:#fff; border-radius:20px; box-shadow:var(--card-shadow);
+    padding:8px 8px 16px; cursor:pointer;
+  }
+  .grand-card img{ width:100%; height:180px; object-fit:cover; border-radius:12px; display:block; }
+  .grand-card h3{
+    font-size:18px; font-weight:700; line-height:1.45; color:#000; margin:10px 4px 12px;
+  }
+  .grand-card .meta-wrap{
+    display:flex; justify-content:space-between; align-items:center; padding:0 4px; gap:16px;
+  }
+  .grand-card .meta-col{ display:flex; flex-direction:column; gap:6px; flex:1; }
+
+  /* Event card (sport/social) */
+  .event-card{
+    background:#fff; border-radius:20px; box-shadow:var(--card-shadow);
+    padding:8px 8px 16px; margin-bottom:16px; cursor:pointer;
+  }
+  .event-card .photo{
+    position:relative; height:160px; border-radius:12px; overflow:hidden;
+  }
+  .event-card .photo img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .event-card .photo .overlay-title{
+    position:absolute; left:0; right:0; bottom:0; height:52px;
+    background:linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.9) 100%);
+    display:flex; align-items:flex-end; padding:0 8px 8px;
+  }
+  .event-card .photo .overlay-title span{
+    color:#fff; font-size:18px; font-weight:700; line-height:1.5;
+  }
+  .event-card .meta-wrap{
+    display:flex; justify-content:space-between; align-items:center; padding:12px 4px 0; gap:12px;
+  }
+  .event-card .meta-col{ display:flex; flex-direction:column; gap:6px; flex:1; }
+
+  /* Bottom nav */
+  .bottomnav{
+    position:absolute; bottom:0; left:0; right:0;
+    background:#fff; box-shadow:var(--nav-shadow);
+    z-index:10;
+  }
+  .navrow{ display:flex; padding:8px 0; }
+  .navitem{
+    flex:1; display:flex; flex-direction:column; align-items:center; gap:8px;
+    cursor:pointer;
+  }
+  .navitem svg{ width:26px; height:26px; }
+  .navitem .label{ font-size:12px; font-weight:400; color:var(--gray); }
+  .navitem.active .label{ color:var(--red-a); font-weight:700; }
+  .navitem.active svg *{ stroke:var(--red-a) !important; }
+  .home-indicator{ height:28px; display:flex; align-items:flex-end; justify-content:center; padding-bottom:8px; }
+  .home-indicator .bar{ width:134px; height:5px; background:#000; border-radius:10px; }
+
+  /* Detail overlay */
+  .overlay{
+    position:absolute; inset:0; background:#fff;
+    transform:translateX(100%); transition:transform .28s ease;
+    z-index:30; display:flex; flex-direction:column;
+  }
+  .overlay.show{ transform:translateX(0); }
+  .overlay-top{ height:240px; position:relative; flex-shrink:0; }
+  .overlay-top img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .overlay-back{
+    position:absolute; top:20px; left:18px; width:36px; height:36px;
+    background:rgba(0,0,0,0.45); border-radius:50%; color:#fff;
+    display:flex; align-items:center; justify-content:center; font-size:18px;
+    cursor:pointer;
+  }
+  .overlay-body{ padding:20px; overflow-y:auto; flex:1; }
+  .overlay-body h2{ font-size:21px; font-weight:800; color:#000; margin-bottom:14px; line-height:1.35; }
+  .overlay-body .meta{ display:flex; flex-direction:column; gap:12px; margin-bottom:18px; }
+  .overlay-body .meta .row{ display:flex; gap:10px; align-items:center; }
+  .overlay-body .meta .row b{ font-size:13px; font-weight:600; font-family:'Poppins',sans-serif; }
+  .overlay-body p.desc{ font-size:13.5px; color:#444; line-height:1.7; font-family:'Poppins', sans-serif; }
+  .overlay-footer{ padding:16px 20px 24px; border-top:1px solid #f2f2f2; }
+  .overlay-footer button{
+    width:100%; padding:14px 0; border:none; border-radius:14px;
+    background:linear-gradient(0deg, var(--red-a) 0%, var(--red-b) 100%);
+    color:#fff; font-weight:700; font-size:15px; cursor:pointer;
+  }
+
+  /* Toast */
+  .toast{
+    position:absolute; bottom:110px; left:50%; transform:translateX(-50%) translateY(20px);
+    background:#000; color:#fff; padding:12px 22px; border-radius:30px;
+    font-size:13px; font-weight:600; opacity:0; pointer-events:none;
+    transition:all .3s ease; z-index:50; white-space:nowrap;
+  }
+  .toast.show{ opacity:1; transform:translateX(-50%) translateY(0); }
+
+  .placeholder-page{ padding:60px 30px; text-align:center; color:var(--gray); }
+  .placeholder-page .big-icon{ font-size:50px; margin-bottom:14px; }
+  .placeholder-page h3{ color:#000; font-size:17px; margin-bottom:6px; }
+  .placeholder-page p{ font-size:13px; line-height:1.6; }
+
+  .ticket-card{
+    margin:14px 16px; background:#fff; border-radius:16px;
+    box-shadow:var(--card-shadow); padding:16px; display:flex; gap:12px; align-items:center;
+  }
+  .ticket-card .dot{ width:44px; height:44px; border-radius:12px; background:#FCEBEC; display:flex; align-items:center; justify-content:center; font-size:20px; flex-shrink:0;}
+  .ticket-card .tx{ font-size:13px; color:#000; font-weight:700; }
+  .ticket-card .tx span{ display:block; font-weight:400; color:var(--gray); font-size:11.5px; margin-top:2px;}
+
+  /* Lion Pay */
+  .paycard{
+    width:100%; height:200px; padding:20px; border-radius:20px; position:relative;
+    background:linear-gradient(180deg, var(--red-b) 0%, var(--red-a) 100%);
+    display:flex; flex-direction:column; justify-content:space-between;
+    overflow:hidden; margin-top:16px;
+  }
+  .paycard-logo{
+    color:#fff; font-size:18px; font-weight:800; letter-spacing:1px; position:relative; z-index:2;
+    font-family:'Plus Jakarta Sans', sans-serif;
+  }
+  .paycard-balance{ position:relative; z-index:2; }
+  .paycard-balance .label{ color:#fff; font-size:14px; font-weight:400; opacity:0.9; }
+  .paycard-balance .amount{ color:#fff; font-size:22px; font-weight:700; margin-top:2px; }
+  .paycard-deco{
+    position:absolute; right:-50px; top:20px; width:220px; height:220px; border-radius:50%;
+    background:radial-gradient(circle at 35% 35%, rgba(255,255,255,0.18) 0%, transparent 70%);
+    pointer-events:none;
+  }
+  .paycard-deco::before{
+    content:""; position:absolute; inset:0; border-radius:50%;
+    background:repeating-radial-gradient(circle, rgba(255,255,255,0.06) 0px, rgba(255,255,255,0.06) 1px, transparent 1px, transparent 14px);
+  }
+
+  .scan-btn{
+    width:100%; margin-top:16px; padding:14px 24px; border:none; border-radius:12px; cursor:pointer;
+    background:linear-gradient(0deg, var(--red-a) 0%, var(--red-b) 100%);
+    display:flex; align-items:center; justify-content:center; gap:12px;
+    color:#fff; font-family:'Plus Jakarta Sans', sans-serif; font-weight:700; font-size:16px;
+    transition:transform .12s ease;
+  }
+  .scan-btn:active{ transform:scale(0.97); }
+  .scan-btn svg{ width:22px; height:22px; flex-shrink:0; }
+
+  .history-item{
+    padding-bottom:12px; margin-bottom:16px; border-bottom:1px solid #E5E7EB;
+    display:flex; align-items:center; gap:10px;
+  }
+  .history-icon{
+    width:44px; height:44px; border-radius:40px; background:#F3F4F6; flex-shrink:0;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .history-icon svg{ width:24px; height:24px; }
+  .history-info{ flex:1; display:flex; flex-direction:column; gap:4px; min-width:0; }
+  .history-info .h-title{ color:#111827; font-size:16px; font-weight:500; font-family:'Plus Jakarta Sans', sans-serif; }
+  .history-info .h-sub{ color:#696969; font-size:14px; font-weight:500; font-family:'Plus Jakarta Sans', sans-serif; }
+  .history-info .h-date{ color:#B6B6B6; font-size:14px; font-weight:500; font-family:'Plus Jakarta Sans', sans-serif; }
+  .history-amount{ color:#EF4444; font-size:16px; font-weight:400; font-family:'Poppins', sans-serif; flex-shrink:0; }
+</style>
+</head>
+<body>
+
+<div class="phone" id="phone">
+
+  <!-- EVENT LIST SCREEN -->
+  <div class="screen" id="screen-events">
+    <div class="lion-glow"></div>
+    <div class="statusbar">
+      <span>9:41</span>
+      <span class="icons">▂▄▆ 📶 🔋</span>
+    </div>
+
+    <div class="content">
+      <div class="greeting">Hi, Muhammad Ihsan Fauzan :)</div>
+      <div class="section-title" style="margin-top:16px;">Grand Event</div>
+
+      <!-- Grand Event card -->
+      <div class="grand-card" onclick="openDetail('hut')">
+        <img src="https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=700&q=80" alt="Grand Event">
+        <h3>Lion Air Group 26th Anniversary — Stronger Together, Better Forever</h3>
+        <div class="meta-wrap">
+          <div class="meta-col">
+            <div class="meta-row">
+              <span class="icon">{{CAL}}</span>
+              <span class="meta-text">25 September 2026</span>
+            </div>
+            <div class="meta-row">
+              <span class="icon">{{PIN}}</span>
+              <span class="meta-text">Komplek Balaraja Lion Group</span>
+            </div>
+          </div>
+          <button class="detail-btn" onclick="event.stopPropagation(); openDetail('hut')">Detail</button>
+        </div>
+      </div>
+
+      <div class="section-title">Sport Event</div>
+
+      <!-- Mini Soccer -->
+      <div class="event-card" onclick="openDetail('soccer')">
+        <div class="photo">
+          <img src="https://images.unsplash.com/photo-1551958219-acbc608c6377?w=650&q=80" alt="Mini Soccer">
+          <div class="overlay-title"><span>Mini Soccer</span></div>
+        </div>
+        <div class="meta-wrap">
+          <div class="meta-col">
+            <div class="meta-row"><span class="icon">{{CAL}}</span><span class="meta-text">29-30 Agustus 2026</span></div>
+            <div class="meta-row"><span class="icon">{{PIN}}</span><span class="meta-text">Lapangan H2 Icon Walk Cimone</span></div>
+            <div class="meta-row"><span class="icon">{{USERS}}</span><span class="meta-text">7-15 person</span></div>
+          </div>
+          <button class="detail-btn" onclick="event.stopPropagation(); openDetail('soccer')">Detail</button>
+        </div>
+      </div>
+
+      <!-- Badminton -->
+      <div class="event-card" onclick="openDetail('badminton')">
+        <div class="photo">
+          <img src="https://images.unsplash.com/photo-1626224583764-f87db24ac4ea?w=650&q=80" alt="Badminton">
+          <div class="overlay-title"><span>Badminton</span></div>
+        </div>
+        <div class="meta-wrap">
+          <div class="meta-col">
+            <div class="meta-row"><span class="icon">{{CAL}}</span><span class="meta-text">5-6 September 2026</span></div>
+            <div class="meta-row"><span class="icon">{{PIN}}</span><span class="meta-text">Tontowi Ahmad Badminton Hall BSD</span></div>
+          </div>
+          <button class="detail-btn" onclick="event.stopPropagation(); openDetail('badminton')">Detail</button>
+        </div>
+      </div>
+
+      <!-- Padel -->
+      <div class="event-card" onclick="openDetail('padel')">
+        <div class="photo">
+          <img src="https://images.unsplash.com/photo-1615146877957-19c1c69529a3?w=650&q=80" alt="Padel">
+          <div class="overlay-title"><span>Padel</span></div>
+        </div>
+        <div class="meta-wrap">
+          <div class="meta-col">
+            <div class="meta-row"><span class="icon">{{CAL}}</span><span class="meta-text">12-13 September 2026</span></div>
+            <div class="meta-row"><span class="icon">{{PIN}}</span><span class="meta-text">Smash Padel Villa Melati Mas BSD</span></div>
+          </div>
+          <button class="detail-btn" onclick="event.stopPropagation(); openDetail('padel')">Detail</button>
+        </div>
+      </div>
+
+      <!-- Fun Run -->
+      <div class="event-card" onclick="openDetail('funrun')">
+        <div class="photo">
+          <img src="https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?w=650&q=80" alt="Fun Run">
+          <div class="overlay-title"><span>Fun Run</span></div>
+        </div>
+        <div class="meta-wrap">
+          <div class="meta-col">
+            <div class="meta-row"><span class="icon">{{CAL}}</span><span class="meta-text">19 September 2026</span></div>
+            <div class="meta-row"><span class="icon">{{PIN}}</span><span class="meta-text">Talaga Bestari</span></div>
+          </div>
+          <button class="detail-btn" onclick="event.stopPropagation(); openDetail('funrun')">Detail</button>
+        </div>
+      </div>
+
+      <!-- Chess -->
+      <div class="event-card" onclick="openDetail('chess')">
+        <div class="photo">
+          <img src="https://images.unsplash.com/photo-1528819622765-d6bcf132f793?w=650&q=80" alt="Chess">
+          <div class="overlay-title"><span>Chess</span></div>
+        </div>
+        <div class="meta-wrap">
+          <div class="meta-col">
+            <div class="meta-row"><span class="icon">{{PIN}}</span><span class="meta-text">Kantin Balaraja</span></div>
+            <div class="meta-row"><span class="icon">{{CAL}}</span><span class="meta-text">19 September 2026</span></div>
+          </div>
+          <button class="detail-btn" onclick="event.stopPropagation(); openDetail('chess')">Detail</button>
+        </div>
+      </div>
+
+      <div class="section-title">Social Event</div>
+
+      <!-- Donor Darah -->
+      <div class="event-card" onclick="openDetail('donor')">
+        <div class="photo">
+          <img src="https://images.unsplash.com/photo-1615461066841-6116e61058f4?w=650&q=80" alt="Donor Darah">
+          <div class="overlay-title"><span>Donor Darah</span></div>
+        </div>
+        <div class="meta-wrap">
+          <div class="meta-col">
+            <div class="meta-row"><span class="icon">{{CAL}}</span><span class="meta-text">TBD</span></div>
+            <div class="meta-row"><span class="icon">{{PIN}}</span><span class="meta-text">TBD</span></div>
+          </div>
+          <button class="detail-btn" onclick="event.stopPropagation(); openDetail('donor')">Detail</button>
+        </div>
+      </div>
+
+      <!-- Bakti Sosial -->
+      <div class="event-card" onclick="openDetail('bakti')">
+        <div class="photo">
+          <img src="https://images.unsplash.com/photo-1593113630400-ea4288922497?w=650&q=80" alt="Bakti Sosial">
+          <div class="overlay-title"><span>Bakti Sosial</span></div>
+        </div>
+        <div class="meta-wrap">
+          <div class="meta-col">
+            <div class="meta-row"><span class="icon">{{CAL}}</span><span class="meta-text">TBD</span></div>
+            <div class="meta-row"><span class="icon">{{PIN}}</span><span class="meta-text">TBD</span></div>
+          </div>
+          <button class="detail-btn" onclick="event.stopPropagation(); openDetail('bakti')">Detail</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TICKETS SCREEN -->
+  <div class="screen" id="screen-tickets" style="display:none;">
+    <div class="statusbar"><span>9:41</span><span class="icons">▂▄▆ 📶 🔋</span></div>
+    <div class="content"><div class="section-title" style="margin-top:8px;">My Tickets</div></div>
+    <div id="ticket-list"></div>
+    <div class="placeholder-page" id="ticket-empty">
+      <div class="big-icon">🎫</div>
+      <h3>No tickets yet</h3>
+      <p>Register for an event and it'll show up here.</p>
+    </div>
+  </div>
+
+  <!-- LION PAY SCREEN -->
+  <div class="screen" id="screen-pay" style="display:none;">
+    <div class="statusbar"><span>9:41</span><span class="icons">▂▄▆ 📶 🔋</span></div>
+    <div class="content">
+      <div class="section-title" style="margin-top:8px;">Lion Pay</div>
+
+      <div class="paycard">
+        <div class="paycard-logo">LION PAY</div>
+        <div class="paycard-balance">
+          <div class="label">Saldo</div>
+          <div class="amount" id="pay-balance">Rp 20.000</div>
+        </div>
+        <div class="paycard-deco"></div>
+      </div>
+
+      <button class="scan-btn" onclick="scanQR()">
+        <svg viewBox="0 0 26 26" fill="none">
+          <rect x="1" y="1" width="8" height="8" stroke="white" stroke-width="1.92"/>
+          <rect x="17" y="1" width="8" height="8" stroke="white" stroke-width="1.92"/>
+          <rect x="1" y="17" width="8" height="8" stroke="white" stroke-width="1.92"/>
+          <rect x="4.5" y="4.5" width="1" height="1" stroke="white" stroke-width="1.92"/>
+          <rect x="20.5" y="4.5" width="1" height="1" stroke="white" stroke-width="1.92"/>
+          <rect x="4.5" y="20.5" width="1" height="1" stroke="white" stroke-width="1.92"/>
+          <path d="M17 17h4v4h-4zM23 17h2v2h-2zM17 23h2v2h-2zM21 21h2v2h-2zM21 25h2v-2" stroke="white" stroke-width="1.92" stroke-linejoin="round"/>
+        </svg>
+        <span>Scan QR to Pay</span>
+      </button>
+
+      <div class="section-title" style="font-size:18px; margin-top:24px;">History</div>
+      <div id="history-list"></div>
+    </div>
+  </div>
+
+  <!-- ACCOUNT SCREEN -->
+  <div class="screen" id="screen-account" style="display:none;">
+    <div class="statusbar"><span>9:41</span><span class="icons">▂▄▆ 📶 🔋</span></div>
+    <div class="content"><div class="section-title" style="margin-top:8px;">Account</div></div>
+    <div class="placeholder-page">
+      <div class="big-icon">👤</div>
+      <h3>Muhammad Ihsan Fauzan</h3>
+      <p>Manage your profile, settings, and preferences here.</p>
+    </div>
+  </div>
+
+  <!-- DETAIL OVERLAY -->
+  <div class="overlay" id="overlay">
+    <div class="overlay-top">
+      <img id="ov-img" src="" alt="">
+      <div class="overlay-back" onclick="closeDetail()">←</div>
+    </div>
+    <div class="overlay-body">
+      <h2 id="ov-title"></h2>
+      <div class="meta">
+        <div class="row"><span class="icon" id="ov-icon-cal"></span><b id="ov-date"></b></div>
+        <div class="row"><span class="icon" id="ov-icon-pin"></span><b id="ov-loc"></b></div>
+      </div>
+      <p class="desc" id="ov-desc"></p>
+    </div>
+    <div class="overlay-footer">
+      <button id="ov-register-btn" onclick="registerFromDetail()">Register</button>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast">✅ <span id="toast-text"></span></div>
+
+  <!-- BOTTOM NAV -->
+  <div class="bottomnav">
+    <div class="navrow">
+      <div class="navitem active" data-tab="events" onclick="switchTab('events')">
+        <svg viewBox="0 0 28 28" fill="none"><rect x="3.5" y="4.67" width="21" height="21" rx="3" stroke="#CF0206" stroke-width="1.75"/><path d="M9.33 2.33v4.67M18.67 2.33v4.67M3.5 11.67h21" stroke="#CF0206" stroke-width="1.75" stroke-linecap="round"/></svg>
+        <div class="label">Event List</div>
+      </div>
+      <div class="navitem" data-tab="tickets" onclick="switchTab('tickets')">
+        <svg viewBox="0 0 28 28" fill="none"><circle cx="6.4" cy="7.6" r="2.9" stroke="black" stroke-width="1.75"/><circle cx="6.4" cy="20.4" r="2.9" stroke="black" stroke-width="1.75"/><path d="M12 7.6h12M12 20.4h12" stroke="black" stroke-width="1.75" stroke-linecap="round"/></svg>
+        <div class="label">My Tickets</div>
+      </div>
+      <div class="navitem" data-tab="pay" onclick="switchTab('pay')">
+        <svg viewBox="0 0 28 28" fill="none"><rect x="2.33" y="4.67" width="23.33" height="18.67" rx="3" stroke="black" stroke-width="1.75"/><path d="M2.33 10.5h23.33" stroke="black" stroke-width="1.75"/><rect x="16.33" y="16.33" width="9.33" height="7" rx="1.5" stroke="black" stroke-width="1.75"/></svg>
+        <div class="label">Lion Pay</div>
+      </div>
+      <div class="navitem" data-tab="account" onclick="switchTab('account')">
+        <svg viewBox="0 0 28 28" fill="none"><rect x="2.33" y="2.33" width="23.33" height="23.33" rx="6" stroke="black" stroke-width="1.75"/><circle cx="14" cy="12.5" r="3.5" stroke="black" stroke-width="1.75"/><path d="M8 21c1-3 3.5-4.5 6-4.5s5 1.5 6 4.5" stroke="black" stroke-width="1.75" stroke-linecap="round"/></svg>
+        <div class="label">Account</div>
+      </div>
+    </div>
+    <div class="home-indicator"><div class="bar"></div></div>
+  </div>
+
+</div>
+
+<script>
+// swap icon placeholders with real inline SVG (keeps markup above readable)
+const ICONS = {
+  CAL: `<svg viewBox="0 0 16 16" fill="none"><rect x="2" y="2.67" width="12" height="12" rx="1" stroke="#CF0206" stroke-width="1"/><path d="M5.33 1.33v2.67M10.67 1.33v2.67M2 6.67h12" stroke="#CF0206" stroke-width="1" stroke-linecap="round"/></svg>`,
+  PIN: `<svg viewBox="0 0 16 16" fill="none"><path d="M8 14.67s5-4.44 5-8.67a5 5 0 10-10 0c0 4.23 5 8.67 5 8.67z" stroke="#CF0206" stroke-width="1"/><circle cx="8" cy="6" r="1.67" stroke="#CF0206" stroke-width="1"/></svg>`,
+  USERS: `<svg viewBox="0 0 16 16" fill="none"><circle cx="5.67" cy="5" r="2.33" stroke="#CF0206" stroke-width="1"/><circle cx="10.67" cy="4" r="1.83" stroke="#CF0206" stroke-width="1"/><path d="M1.33 14v-.83a4.33 4.33 0 018.67 0V14M9.33 9.5a3.33 3.33 0 015.33 2.67V14" stroke="#CF0206" stroke-width="1" stroke-linecap="round"/></svg>`
+};
+document.querySelectorAll('.icon').forEach(el=>{
+  const m = el.textContent.match(/\{\{(\w+)\}\}/);
+  if(m && ICONS[m[1]]) el.innerHTML = ICONS[m[1]];
+});
+document.getElementById('ov-icon-cal').innerHTML = ICONS.CAL;
+document.getElementById('ov-icon-pin').innerHTML = ICONS.PIN;
+
+const eventData = {
+  hut: {
+    title:"Lion Air Group 26th Anniversary — Stronger Together, Better Forever",
+    date:"25 September 2026",
+    loc:"Komplek Balaraja Lion Group",
+    img:"https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=800&q=80",
+    desc:"Acara puncak perayaan ulang tahun ke-26 Lion Air Group, menghadirkan hiburan, food festival, games, dan momen kebersamaan untuk seluruh keluarga besar Lion Group."
+  },
+  soccer: {
+    title:"Mini Soccer",
+    date:"29-30 Agustus 2026",
+    loc:"Lapangan H2 Icon Walk Cimone",
+    img:"https://images.unsplash.com/photo-1551958219-acbc608c6377?w=800&q=80",
+    desc:"Turnamen mini soccer antar divisi, tim terdiri dari 7-15 pemain. Daftarkan timmu dan rasakan serunya kompetisi persahabatan ini."
+  },
+  badminton: {
+    title:"Badminton",
+    date:"5-6 September 2026",
+    loc:"Tontowi Ahmad Badminton Hall, BSD",
+    img:"https://images.unsplash.com/photo-1626224583764-f87db24ac4ea?w=800&q=80",
+    desc:"Turnamen badminton ganda dan tunggal terbuka untuk seluruh karyawan Lion Group. Hadiah menarik menanti para juara!"
+  },
+  padel: {
+    title:"Padel",
+    date:"12-13 September 2026",
+    loc:"Smash Padel, Villa Melati Mas BSD",
+    img:"https://images.unsplash.com/photo-1615146877957-19c1c69529a3?w=800&q=80",
+    desc:"Coba olahraga padel yang sedang naik daun bersama rekan kerja. Cocok untuk pemula maupun yang sudah berpengalaman."
+  },
+  funrun: {
+    title:"Fun Run",
+    date:"19 September 2026",
+    loc:"Talaga Bestari",
+    img:"https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?w=800&q=80",
+    desc:"Lari santai bersama keluarga besar Lion Group mengelilingi kawasan Talaga Bestari, cocok untuk semua level kebugaran."
+  },
+  chess: {
+    title:"Chess",
+    date:"19 September 2026",
+    loc:"Kantin Balaraja",
+    img:"https://images.unsplash.com/photo-1528819622765-d6bcf132f793?w=800&q=80",
+    desc:"Turnamen catur santai di kantin Balaraja. Asah strategi dan konsentrasimu sambil bersosialisasi dengan rekan kerja."
+  },
+  donor: {
+    title:"Donor Darah",
+    date:"TBD",
+    loc:"TBD",
+    img:"https://images.unsplash.com/photo-1615461066841-6116e61058f4?w=800&q=80",
+    desc:"Kegiatan donor darah rutin bersama PMI untuk seluruh karyawan Lion Group. Jadwal dan lokasi akan diumumkan segera."
+  },
+  bakti: {
+    title:"Bakti Sosial",
+    date:"TBD",
+    loc:"TBD",
+    img:"https://images.unsplash.com/photo-1593113630400-ea4288922497?w=800&q=80",
+    desc:"Kegiatan bakti sosial untuk masyarakat sekitar sebagai wujud kepedulian Lion Group. Jadwal dan lokasi akan diumumkan segera."
+  }
+};
+
+let currentDetailKey = null;
+let myTickets = [];
+let balance = 20000;
+
+const receiptIcon = `<svg viewBox="0 0 24 24" fill="none"><path d="M3 10.99h18" stroke="black" stroke-width="1.5"/><path d="M2 2.5h20v9.51H2z" stroke="black" stroke-width="1.5"/><path d="M3 10.99v10.52l18-10.52" stroke="black" stroke-width="1.5" stroke-linejoin="round"/></svg>`;
+
+let historyData = [
+  { title:"Pembayaran", sub:"ke KFC - 12345678", date:"7 Mei 2025, 18:00:09", amount:5000 },
+  { title:"Pembayaran", sub:"ke KFC - 12345678", date:"7 Mei 2025, 18:00:09", amount:3000 },
+  { title:"Pembayaran", sub:"ke KFC - 12345678", date:"7 Mei 2025, 18:00:09", amount:2000 },
+  { title:"Pembayaran", sub:"ke KFC - 12345678", date:"7 Mei 2025, 18:00:09", amount:10000 }
+];
+
+function formatRupiah(n){
+  return "Rp " + n.toLocaleString('id-ID');
+}
+
+function renderHistory(){
+  const list = document.getElementById('history-list');
+  if(!list) return;
+  list.innerHTML = '';
+  historyData.forEach(h=>{
+    const el = document.createElement('div');
+    el.className = 'history-item';
+    el.innerHTML = `
+      <div class="history-icon">${receiptIcon}</div>
+      <div class="history-info">
+        <div class="h-title">${h.title}</div>
+        <div class="h-sub">${h.sub}</div>
+        <div class="h-date">${h.date}</div>
+      </div>
+      <div class="history-amount">-${formatRupiah(h.amount)}</div>
+    `;
+    list.appendChild(el);
+  });
+}
+renderHistory();
+
+function scanQR(){
+  showToast('Membuka kamera QR Scanner...');
+}
+
+function openDetail(key){
+  currentDetailKey = key;
+  const d = eventData[key];
+  document.getElementById('ov-img').src = d.img;
+  document.getElementById('ov-title').textContent = d.title;
+  document.getElementById('ov-date').textContent = d.date;
+  document.getElementById('ov-loc').textContent = d.loc;
+  document.getElementById('ov-desc').textContent = d.desc;
+  document.getElementById('overlay').classList.add('show');
+}
+function closeDetail(){ document.getElementById('overlay').classList.remove('show'); }
+
+function registerFromDetail(){
+  const d = eventData[currentDetailKey];
+  if(!myTickets.includes(d.title)){
+    myTickets.push(d.title);
+    renderTickets();
+  }
+  showToast(d.title + ' registered!');
+  closeDetail();
+}
+
+function showToast(text){
+  const toast = document.getElementById('toast');
+  document.getElementById('toast-text').textContent = text;
+  toast.classList.add('show');
+  clearTimeout(window._toastTimer);
+  window._toastTimer = setTimeout(()=> toast.classList.remove('show'), 2200);
+}
+
+function renderTickets(){
+  const list = document.getElementById('ticket-list');
+  const empty = document.getElementById('ticket-empty');
+  list.innerHTML = '';
+  if(myTickets.length === 0){ empty.style.display = 'block'; return; }
+  empty.style.display = 'none';
+  myTickets.forEach(name=>{
+    const el = document.createElement('div');
+    el.className = 'ticket-card';
+    el.innerHTML = `<div class="dot">🎟️</div><div class="tx">${name}<span>E-Ticket · Tap for QR code</span></div>`;
+    list.appendChild(el);
+  });
+}
+
+function switchTab(tab){
+  ['events','tickets','pay','account'].forEach(t=>{
+    document.getElementById('screen-'+t).style.display = (t===tab) ? 'block' : 'none';
+  });
+  document.querySelectorAll('.navitem').forEach(n=>{
+    n.classList.toggle('active', n.dataset.tab === tab);
+  });
+}
+</script>
+
+</body>
+</html>
