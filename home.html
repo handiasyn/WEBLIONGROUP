@@ -41,7 +41,7 @@
                 <span>Komplek Balaraja Lion Group</span>
               </div>
             </div>
-            <button class="btn-detail" onclick="location.href='detail.html?event=grand-event'">Detail</button>
+            <button class="btn-detail" onclick="location.href='grandevent.html'">Detail</button>
           </div>
         </article>
       </div>
@@ -98,33 +98,101 @@
   const pinIcon = '<svg viewBox="0 0 16 16" fill="none"><path d="M8 14.7s5-4.3 5-8.4a5 5 0 1 0-10 0c0 4.1 5 8.4 5 8.4Z" stroke="#E21219" stroke-width="1"/><circle cx="8" cy="6.3" r="1.7" stroke="#E21219" stroke-width="1"/></svg>';
 
   const sportEvents = [
-    { id:'mini-soccer', title:'Mini Soccer', date:'29-30 Agustus 2026', place:'Lapangan H2 Icon Walk Cimone' },
-    { id:'badminton', title:'Badminton', date:'5-6 September 2026', place:'Tontowi Ahmad Badminton Hall BSD' },
-    { id:'padel', title:'Padel', date:'12-13 September 2026', place:'Smash Padel Villa Melati Mas BSD' },
-    { id:'fun-run', title:'Fun Run', date:'19 September 2026', place:'Talaga Bestari' },
-    { id:'chess', title:'Chess', date:'19 September 2026', place:'Kantin LGTC Balaraja' }
-  ];
+  {
+    title: 'Mini Soccer',
+    date: '29-30 Agustus 2026',
+    place: 'Lapangan H2 Icon Walk Cimone',
+    image: 'assets/soccer-poster.jpg',
+    page: 'Minisoccer.html'
+  },
+  {
+    title: 'Badminton',
+    date: '5-6 September 2026',
+    place: 'Tontowi Ahmad Badminton Hall BSD',
+    image: 'assets/badmin-poster.png',
+    page: 'Badminton.html'
+  },
+  {
+    title: 'Padel',
+    date: '12-13 September 2026',
+    place: 'Smash Padel Villa Melati Mas BSD',
+    image: 'assets/padel-poster.jpg',
+    page: 'padel.html'
+  },
+  {
+    title: 'Fun Run',
+    date: '19 September 2026',
+    place: 'Talaga Bestari',
+    image: 'assets/funrun-poster.jpg',
+    page: 'funrun.html'
+  },
+  {
+    title: 'Chess',
+    date: '19 September 2026',
+    place: 'Kantin LGTC Balaraja',
+    image: 'assets/chess-poster.jpg',
+    page: 'chess.html'
+  }
+];
 
   const socialEvents = [
-    { id:'donor-darah', title:'Donor Darah', date:'TBD', place:'TBD' },
-    { id:'bakti-sosial', title:'Bakti Sosial', date:'TBD', place:'TBD' }
-  ];
+  {
+    title: 'Donor Darah',
+    date: 'TBD',
+    place: 'TBD',
+    image: 'assets/donordarah-poster.png',
+    page: 'donordarah.html'
+  },
+  {
+    title: 'Bakti Sosial',
+    date: 'TBD',
+    place: 'TBD',
+    image: 'assets/baktisosial-poster.png',
+    page: 'baktisosial.html'
+  }
+];
 
   function cardTemplate(ev) {
-    return '<article class="event-card">' +
-      '<div class="cover-wrap">' +
-        '<img class="cover" src="https://placehold.co/327x160?text=' + encodeURIComponent(ev.title) + '" alt="' + ev.title + '">' +
-        '<div class="cover-caption">' + ev.title + '</div>' +
-      '</div>' +
-      '<div class="meta-row">' +
-        '<div class="meta-col">' +
-          '<div class="meta-item">' + calendarIcon + '<span>' + ev.date + '</span></div>' +
-          '<div class="meta-item">' + pinIcon + '<span>' + ev.place + '</span></div>' +
-        '</div>' +
-        '<button class="btn-detail" onclick="location.href=\'detail.html?event=' + ev.id + '\'">Detail</button>' +
-      '</div>' +
-    '</article>';
-  }
+  return `
+    <article class="event-card" onclick="location.href='${ev.page}'" style="cursor:pointer">
+
+      <div class="cover-wrap">
+        <img class="cover"
+             src="${ev.image}"
+             alt="${ev.title}">
+
+        <div class="cover-caption">
+          ${ev.title}
+        </div>
+      </div>
+
+      <div class="meta-row">
+
+        <div class="meta-col">
+
+          <div class="meta-item">
+            ${calendarIcon}
+            <span>${ev.date}</span>
+          </div>
+
+          <div class="meta-item">
+            ${pinIcon}
+            <span>${ev.place}</span>
+          </div>
+
+        </div>
+
+        <button
+          class="btn-detail"
+          onclick="event.stopPropagation();location.href='${ev.page}'">
+          Detail
+        </button>
+
+      </div>
+
+    </article>
+  `;
+}
 
   document.getElementById('sportEvents').innerHTML = sportEvents.map(cardTemplate).join('');
   document.getElementById('socialEvents').innerHTML = socialEvents.map(cardTemplate).join('');
