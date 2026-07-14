@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>Lion Pay - Lion Group</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&family=Inter:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<style>
+  .page-title-plain{
+    padding: calc(24px + var(--safe-t)) 16px 8px;
+    font-size: clamp(22px, 6vw, 26px);
+    font-weight:800;
+    color:#000;
+  }
+
+  .balance-card{
+    position:relative;
+    overflow:hidden;
+    border-radius:20px;
+    padding:20px;
+    min-height:180px;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    background: linear-gradient(180deg, #ED1C24 0%, #CF0206 100%);
+  }
+
+  .balance-card .decor-circle{
+    position:absolute;
+    right:-40px;
+    bottom:-40px;
+    width:180px;
+    height:180px;
+    border-radius:50%;
+    background: radial-gradient(circle at 35% 35%, rgba(255,255,255,0.25), rgba(255,255,255,0.02) 70%);
+    pointer-events:none;
+  }
+
+  .balance-card .brand{
+    color:#fff;
+    font-weight:800;
+    font-size:20px;
+    letter-spacing:0.5px;
+    position:relative;
+    z-index:1;
+  }
+
+  .balance-card .balance-label{
+    color:#fff;
+    font-size:16px;
+    font-weight:400;
+    position:relative;
+    z-index:1;
+  }
+
+  .balance-card .balance-amount{
+    color:#fff;
+    font-size: clamp(22px, 6vw, 26px);
+    font-weight:700;
+    position:relative;
+    z-index:1;
+  }
+
+  .history-title{
+    font-size: clamp(16px, 4.5vw, 18px);
+    font-weight:800;
+    color:#000;
+  }
+
+  .history-list{
+    display:flex;
+    flex-direction:column;
+    gap:16px;
+  }
+
+  .history-item{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    padding-bottom:12px;
+    border-bottom:1px solid var(--line);
+  }
+
+  .history-left{
+    display:flex;
+    align-items:flex-start;
+    gap:10px;
+    min-width:0;
+  }
+
+  .history-icon{
+    width:44px;
+    height:44px;
+    flex-shrink:0;
+    background:#F3F4F6;
+    border-radius:40px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+
+  .history-text{
+    display:flex;
+    flex-direction:column;
+    gap:4px;
+    min-width:0;
+  }
+
+  .history-text .title{
+    font-size:16px;
+    font-weight:500;
+    color:#111827;
+  }
+
+  .history-text .sub{
+    font-size:14px;
+    font-weight:500;
+    color:#696969;
+  }
+
+  .history-text .time{
+    font-size:14px;
+    font-weight:500;
+    color:#B6B6B6;
+  }
+
+  .history-amount{
+    flex-shrink:0;
+    font-family:'Plus Jakarta Sans', sans-serif;
+    font-size:16px;
+    color:#EF4444;
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <div class="page-title-plain">Lion Pay</div>
+
+  <main class="content" style="padding-top:0;">
+
+    <div class="balance-card">
+      <div class="decor-circle"></div>
+      <div class="brand">LION PAY</div>
+      <div>
+        <div class="balance-label">Saldo</div>
+        <div class="balance-amount" id="balanceAmount">Rp 20.000</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="history-title" style="margin-bottom:12px;">History</div>
+      <div class="history-list" id="historyList"></div>
+    </div>
+
+  </main>
+</div>
+
+<nav class="bottom-nav">
+  <div class="nav-inner">
+    <a class="nav-item" href="home.html">
+      <svg viewBox="0 0 28 28" fill="none"><rect x="3.5" y="4.7" width="21" height="21" rx="3" stroke="black" stroke-width="1.75"/><path d="M9.3 2.3v4.7M18.7 2.3v4.7M3.5 11.7h21" stroke="black" stroke-width="1.75"/></svg>
+      <span>Event List</span>
+    </a>
+    <a class="nav-item" href="tickets.html">
+      <svg viewBox="0 0 28 28" fill="none"><path d="M4 11a2.5 2.5 0 0 0 0 5v4.5A1.5 1.5 0 0 0 5.5 22h17a1.5 1.5 0 0 0 1.5-1.5V16a2.5 2.5 0 0 1 0-5V7.5A1.5 1.5 0 0 0 22.5 6h-17A1.5 1.5 0 0 0 4 7.5Z" stroke="black" stroke-width="1.75"/></svg>
+      <span>My Tickets</span>
+    </a>
+    <a class="nav-item active" href="lionpay.html">
+      <svg viewBox="0 0 28 28" fill="none"><rect x="2.3" y="4.7" width="23.3" height="18.7" rx="3" stroke="#CF0206" stroke-width="1.75"/><path d="M18.3 12.3h4.7a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-4.7a3 3 0 0 1 0-6Z" stroke="#CF0206" stroke-width="1.75"/></svg>
+      <span>Lion Pay</span>
+    </a>
+    <a class="nav-item" href="account.html">
+      <svg viewBox="0 0 28 28" fill="none"><circle cx="14" cy="14" r="11.7" stroke="black" stroke-width="1.75"/><circle cx="14" cy="11" r="4" stroke="black" stroke-width="1.75"/><path d="M6.5 22a7.7 7.7 0 0 1 15 0" stroke="black" stroke-width="1.75"/></svg>
+      <span>Account</span>
+    </a>
+  </div>
+</nav>
+
+<script>
+  // Sample data — replace with real balance/history from your backend/API
+  const balance = 20000;
+  document.getElementById('balanceAmount').textContent =
+    'Rp ' + balance.toLocaleString('id-ID');
+
+  const history = [
+    { title:'Pembayaran', sub:'ke KFC - 12345678', time:'7 Mei 2025, 18:00:09', amount: -5000 },
+    { title:'Pembayaran', sub:'ke KFC - 12345678', time:'7 Mei 2025, 18:00:09', amount: -3000 },
+    { title:'Pembayaran', sub:'ke KFC - 12345678', time:'7 Mei 2025, 18:00:09', amount: -2000 },
+    { title:'Pembayaran', sub:'ke KFC - 12345678', time:'7 Mei 2025, 18:00:09', amount: -10000 }
+  ];
+
+  const walletIcon = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M3 10.99A2 2 0 0 1 5 9h14a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-6Z" stroke="black" stroke-width="1.5"/><path d="M4 9V6.5A1.5 1.5 0 0 1 5.5 5h11a1.5 1.5 0 0 1 1.5 1.5V9" stroke="black" stroke-width="1.5"/></svg>';
+
+  function historyTemplate(h) {
+    const formatted = 'Rp ' + Math.abs(h.amount).toLocaleString('id-ID');
+    return '<div class="history-item">' +
+      '<div class="history-left">' +
+        '<div class="history-icon">' + walletIcon + '</div>' +
+        '<div class="history-text">' +
+          '<div class="title">' + h.title + '</div>' +
+          '<div class="sub">' + h.sub + '</div>' +
+          '<div class="time">' + h.time + '</div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="history-amount">-' + formatted + '</div>' +
+    '</div>';
+  }
+
+  document.getElementById('historyList').innerHTML = history.map(historyTemplate).join('');
+</script>
+
+</body>
+</html>

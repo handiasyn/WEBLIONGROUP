@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>Home - Lion Group</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Poppins:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<style>
+  /* page-specific tweaks */
+  .greet-block{ display:flex; flex-direction:column; gap:8px; }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <header class="hero">
+    <div class="decor-circle"></div>
+    <div class="greeting" id="greetingText">Hi, Muhammad Ihsan Fauzan :)</div>
+  </header>
+
+  <main class="content">
+
+    <!-- Grand Event -->
+    <section class="section">
+      <div class="section-title">Grand Event</div>
+      <div class="section-list">
+        <article class="event-card">
+          <img class="cover" src="https://placehold.co/328x180?text=Grand+Event" alt="Lion Air Group 26th Anniversary">
+          <div class="title">Lion Air Group 26th Anniversary — Stronger Together, Better Forever</div>
+          <div class="meta-row">
+            <div class="meta-col">
+              <div class="meta-item">
+                <svg viewBox="0 0 16 16" fill="none"><rect x="2" y="2.5" width="12" height="11" rx="1.5" stroke="#CF0206" stroke-width="1"/><path d="M5.3 1.3v2.7M10.7 1.3v2.7M2 6h12" stroke="#CF0206" stroke-width="1"/></svg>
+                <span>25 September 2026</span>
+              </div>
+              <div class="meta-item">
+                <svg viewBox="0 0 16 16" fill="none"><path d="M8 14.7s5-4.3 5-8.4a5 5 0 1 0-10 0c0 4.1 5 8.4 5 8.4Z" stroke="#E21219" stroke-width="1"/><circle cx="8" cy="6.3" r="1.7" stroke="#E21219" stroke-width="1"/></svg>
+                <span>Komplek Balaraja Lion Group</span>
+              </div>
+            </div>
+            <button class="btn-detail" onclick="location.href='detail.html?event=grand-event'">Detail</button>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- Sport Event -->
+    <section class="section">
+      <div class="section-title">Sport Event</div>
+      <div class="section-list" id="sportEvents"></div>
+    </section>
+
+    <!-- Social Event -->
+    <section class="section">
+      <div class="section-title">Social Event</div>
+      <div class="section-list" id="socialEvents"></div>
+    </section>
+
+  </main>
+</div>
+
+<nav class="bottom-nav">
+  <div class="nav-inner">
+    <a class="nav-item active" href="home.html">
+      <svg viewBox="0 0 28 28" fill="none"><rect x="3.5" y="4.7" width="21" height="21" rx="3" stroke="#CF0206" stroke-width="1.75"/><path d="M9.3 2.3v4.7M18.7 2.3v4.7M3.5 11.7h21" stroke="#CF0206" stroke-width="1.75"/></svg>
+      <span>Event List</span>
+    </a>
+    <a class="nav-item" href="tickets.html">
+      <svg viewBox="0 0 28 28" fill="none"><path d="M4 11a2.5 2.5 0 0 0 0 5v4.5A1.5 1.5 0 0 0 5.5 22h17a1.5 1.5 0 0 0 1.5-1.5V16a2.5 2.5 0 0 1 0-5V7.5A1.5 1.5 0 0 0 22.5 6h-17A1.5 1.5 0 0 0 4 7.5Z" stroke="black" stroke-width="1.75"/></svg>
+      <span>My Tickets</span>
+    </a>
+    <a class="nav-item" href="lionpay.html">
+      <svg viewBox="0 0 28 28" fill="none"><rect x="2.3" y="4.7" width="23.3" height="18.7" rx="3" stroke="black" stroke-width="1.75"/><path d="M18.3 12.3h4.7a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-4.7a3 3 0 0 1 0-6Z" stroke="black" stroke-width="1.75"/></svg>
+      <span>Lion Pay</span>
+    </a>
+    <a class="nav-item" href="account.html">
+      <svg viewBox="0 0 28 28" fill="none"><circle cx="14" cy="14" r="11.7" stroke="black" stroke-width="1.75"/><circle cx="14" cy="11" r="4" stroke="black" stroke-width="1.75"/><path d="M6.5 22a7.7 7.7 0 0 1 15 0" stroke="black" stroke-width="1.75"/></svg>
+      <span>Account</span>
+    </a>
+  </div>
+</nav>
+
+<script>
+  // greet user by ID Staff saved from login, fallback to design default
+  (function () {
+    try {
+      const idStaff = sessionStorage.getItem('idStaff');
+      if (idStaff) {
+        document.getElementById('greetingText').textContent = 'Hi, ' + idStaff + ' :)';
+      }
+    } catch (e) { /* no-op */ }
+  })();
+
+  const calendarIcon = '<svg viewBox="0 0 16 16" fill="none"><rect x="2" y="2.5" width="12" height="11" rx="1.5" stroke="#CF0206" stroke-width="1"/><path d="M5.3 1.3v2.7M10.7 1.3v2.7M2 6h12" stroke="#CF0206" stroke-width="1"/></svg>';
+  const pinIcon = '<svg viewBox="0 0 16 16" fill="none"><path d="M8 14.7s5-4.3 5-8.4a5 5 0 1 0-10 0c0 4.1 5 8.4 5 8.4Z" stroke="#E21219" stroke-width="1"/><circle cx="8" cy="6.3" r="1.7" stroke="#E21219" stroke-width="1"/></svg>';
+
+  const sportEvents = [
+    { id:'mini-soccer', title:'Mini Soccer', date:'29-30 Agustus 2026', place:'Lapangan H2 Icon Walk Cimone' },
+    { id:'badminton', title:'Badminton', date:'5-6 September 2026', place:'Tontowi Ahmad Badminton Hall BSD' },
+    { id:'padel', title:'Padel', date:'12-13 September 2026', place:'Smash Padel Villa Melati Mas BSD' },
+    { id:'fun-run', title:'Fun Run', date:'19 September 2026', place:'Talaga Bestari' },
+    { id:'chess', title:'Chess', date:'19 September 2026', place:'Kantin LGTC Balaraja' }
+  ];
+
+  const socialEvents = [
+    { id:'donor-darah', title:'Donor Darah', date:'TBD', place:'TBD' },
+    { id:'bakti-sosial', title:'Bakti Sosial', date:'TBD', place:'TBD' }
+  ];
+
+  function cardTemplate(ev) {
+    return '<article class="event-card">' +
+      '<div class="cover-wrap">' +
+        '<img class="cover" src="https://placehold.co/327x160?text=' + encodeURIComponent(ev.title) + '" alt="' + ev.title + '">' +
+        '<div class="cover-caption">' + ev.title + '</div>' +
+      '</div>' +
+      '<div class="meta-row">' +
+        '<div class="meta-col">' +
+          '<div class="meta-item">' + calendarIcon + '<span>' + ev.date + '</span></div>' +
+          '<div class="meta-item">' + pinIcon + '<span>' + ev.place + '</span></div>' +
+        '</div>' +
+        '<button class="btn-detail" onclick="location.href=\'detail.html?event=' + ev.id + '\'">Detail</button>' +
+      '</div>' +
+    '</article>';
+  }
+
+  document.getElementById('sportEvents').innerHTML = sportEvents.map(cardTemplate).join('');
+  document.getElementById('socialEvents').innerHTML = socialEvents.map(cardTemplate).join('');
+</script>
+
+</body>
+</html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>Account - Lion Group</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<style>
+  .page-title-plain{
+    padding: calc(24px + var(--safe-t)) 16px 8px;
+    font-size: clamp(22px, 6vw, 26px);
+    font-weight:800;
+    color:#000;
+  }
+  .profile-card{
+    background:#fff;
+    border-radius:20px;
+    box-shadow:0 0 12px rgba(0,0,0,0.08);
+    padding:24px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:8px;
+  }
+  .avatar{
+    width:72px; height:72px;
+    border-radius:50%;
+    background: linear-gradient(0deg, #E21219 0%, #ED1C24 100%);
+    display:flex; align-items:center; justify-content:center;
+    color:#fff; font-size:24px; font-weight:800;
+  }
+  .profile-name{ font-size:16px; font-weight:700; color:#000; }
+  .profile-id{ font-size:13px; color:#696969; }
+  .menu-list{ display:flex; flex-direction:column; gap:12px; }
+  .menu-item{
+    background:#fff;
+    border-radius:16px;
+    box-shadow:0 0 8px rgba(0,0,0,0.06);
+    padding:16px;
+    font-size:14px;
+    font-weight:600;
+    color:#111827;
+    cursor:pointer;
+  }
+  .menu-item.danger{ color:#C40000; }
+  .todo-note{
+    font-size:12px;
+    color:#B6B6B6;
+    text-align:center;
+    padding-top:8px;
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <div class="page-title-plain">Account</div>
+
+  <main class="content" style="padding-top:0;">
+    <div class="profile-card">
+      <div class="avatar" id="avatarInitial">?</div>
+      <div class="profile-name" id="profileName">-</div>
+      <div class="profile-id" id="profileId">ID Staff: -</div>
+    </div>
+
+    <div class="menu-list">
+      <div class="menu-item">Edit Profil</div>
+      <div class="menu-item">Riwayat Event</div>
+      <div class="menu-item">Bantuan</div>
+      <div class="menu-item danger" id="logoutBtn">Keluar</div>
+    </div>
+
+    <div class="todo-note">Halaman ini masih placeholder — kirim desain final kalau sudah ada.</div>
+  </main>
+</div>
+
+<nav class="bottom-nav">
+  <div class="nav-inner">
+    <a class="nav-item" href="home.html">
+      <svg viewBox="0 0 28 28" fill="none"><rect x="3.5" y="4.7" width="21" height="21" rx="3" stroke="black" stroke-width="1.75"/><path d="M9.3 2.3v4.7M18.7 2.3v4.7M3.5 11.7h21" stroke="black" stroke-width="1.75"/></svg>
+      <span>Event List</span>
+    </a>
+    <a class="nav-item" href="tickets.html">
+      <svg viewBox="0 0 28 28" fill="none"><path d="M4 11a2.5 2.5 0 0 0 0 5v4.5A1.5 1.5 0 0 0 5.5 22h17a1.5 1.5 0 0 0 1.5-1.5V16a2.5 2.5 0 0 1 0-5V7.5A1.5 1.5 0 0 0 22.5 6h-17A1.5 1.5 0 0 0 4 7.5Z" stroke="black" stroke-width="1.75"/></svg>
+      <span>My Tickets</span>
+    </a>
+    <a class="nav-item" href="lionpay.html">
+      <svg viewBox="0 0 28 28" fill="none"><rect x="2.3" y="4.7" width="23.3" height="18.7" rx="3" stroke="black" stroke-width="1.75"/><path d="M18.3 12.3h4.7a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-4.7a3 3 0 0 1 0-6Z" stroke="black" stroke-width="1.75"/></svg>
+      <span>Lion Pay</span>
+    </a>
+    <a class="nav-item active" href="account.html">
+      <svg viewBox="0 0 28 28" fill="none"><circle cx="14" cy="14" r="11.7" stroke="#CF0206" stroke-width="1.75"/><circle cx="14" cy="11" r="4" stroke="#CF0206" stroke-width="1.75"/><path d="M6.5 22a7.7 7.7 0 0 1 15 0" stroke="#CF0206" stroke-width="1.75"/></svg>
+      <span>Account</span>
+    </a>
+  </div>
+</nav>
+
+<script>
+  (function () {
+    try {
+      const idStaff = sessionStorage.getItem('idStaff');
+      const dob = sessionStorage.getItem('dob');
+      if (idStaff) {
+        document.getElementById('profileName').textContent = idStaff;
+        document.getElementById('profileId').textContent = 'ID Staff: ' + idStaff + (dob ? ' • Lahir: ' + dob : '');
+        document.getElementById('avatarInitial').textContent = idStaff.charAt(0).toUpperCase();
+      }
+    } catch (e) { /* no-op */ }
+  })();
+
+  document.getElementById('logoutBtn').addEventListener('click', function () {
+    try { sessionStorage.clear(); } catch (e) {}
+    window.location.href = 'login.html';
+  });
+</script>
+
+</body>
+</html>

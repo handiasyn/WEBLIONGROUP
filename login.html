@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>Login - Lion Group</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;700;800&family=Poppins:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --red-dark: #E21219;
+    --red-light: #ED1C24;
+    --text-900: #111827;
+    --text-600: #6B7280;
+    --line-500: #9CA3AF;
+    --error: #C40000;
+    --safe-t: env(safe-area-inset-top, 0px);
+    --safe-b: env(safe-area-inset-bottom, 0px);
+  }
+
+  *{ box-sizing: border-box; margin:0; padding:0; }
+
+  html, body{ height:100%; }
+
+  body{
+    font-family:'Plus Jakarta Sans', sans-serif;
+    min-height:100dvh;
+    background: linear-gradient(0deg, var(--red-dark) 0%, var(--red-light) 100%);
+    position:relative;
+    overflow-x:hidden;
+  }
+
+  /* background plane image pinned to the visible viewport, scales with screen height not fixed px */
+  .bg-plane{
+    position:fixed;
+    left:0; right:0; bottom:0;
+    width:100%;
+    height:38dvh;
+    min-height:200px;
+    max-height:340px;
+    background-image:url('assets/bg-plane.png');
+    background-position: bottom center;
+    background-size: cover;
+    background-repeat:no-repeat;
+    pointer-events:none;
+    z-index:0;
+  }
+
+  .screen{
+    position:relative;
+    z-index:1;
+    min-height:100dvh;
+    width:100%;
+    max-width:480px;
+    margin:0 auto;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding: max(28px, var(--safe-t)) 20px max(20px, var(--safe-b));
+  }
+
+  .logo-wrap{
+    width:100%;
+    display:flex;
+    justify-content:center;
+    padding-top: clamp(16px, 5dvh, 56px);
+    flex-shrink:0;
+  }
+
+  .logo{
+    width: clamp(140px, 42vw, 210px);
+    height:auto;
+    filter: brightness(0) invert(1); /* ensure logo reads white on red; remove if logo asset is already white */
+  }
+
+  .spacer{
+    flex:1 1 auto;
+    min-height:20px;
+  }
+
+  .card{
+    position:relative;
+    z-index:2;
+    width:100%;
+    max-width:420px;
+    background:#fff;
+    border-radius:20px;
+    padding: clamp(24px, 6vw, 32px) clamp(18px, 5vw, 24px);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap: clamp(18px, 4vh, 24px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+    margin-bottom: clamp(12px, 4dvh, 40px);
+    flex-shrink:0;
+  }
+
+  .card-head{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:12px;
+    width:100%;
+  }
+
+  .card-head h1{
+    font-size: clamp(17px, 4.5vw, 20px);
+    font-weight:800;
+    color:#000;
+    text-align:center;
+  }
+
+  .card-head p{
+    font-size: clamp(12px, 3.2vw, 13px);
+    font-weight:300;
+    color:var(--text-600);
+    line-height:1.6;
+    text-align:center;
+  }
+
+  form{
+    width:100%;
+    display:flex;
+    flex-direction:column;
+    gap: clamp(12px, 3.5vw, 16px);
+  }
+
+  .field{
+    width:100%;
+    position:relative;
+  }
+
+  .field-box{
+    width:100%;
+    min-height:56px;
+    padding:8px 12px;
+    background:#fff;
+    border-radius:12px;
+    border:1px solid var(--line-500);
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    transition:border-color .15s ease, box-shadow .15s ease;
+  }
+
+  .field-box:focus-within{
+    border-color: var(--red-light);
+    box-shadow: 0 0 0 3px rgba(237,28,36,0.12);
+  }
+
+  .field-box label{
+    font-size:13px;
+    color:var(--text-600);
+    line-height:18px;
+    pointer-events:none;
+  }
+
+  .field-box input{
+    border:none;
+    outline:none;
+    background:transparent;
+    font-family:'Plus Jakarta Sans', sans-serif;
+    font-size:16px; /* keep >=16px to prevent iOS auto-zoom on focus */
+    color:var(--text-900);
+    line-height:24px;
+    width:100%;
+    padding:0;
+  }
+
+  input[type="date"]{ color-scheme: light; }
+
+  input[type="date"]::-webkit-calendar-picker-indicator{
+    cursor:pointer;
+    opacity:0.65;
+    filter: invert(28%) sepia(90%) saturate(3000%) hue-rotate(340deg) brightness(95%) contrast(95%);
+  }
+
+  .error-msg{
+    font-size:12px;
+    color:var(--error);
+    min-height:14px;
+    margin-top:-4px;
+  }
+
+  .submit-btn{
+    width:100%;
+    min-height:48px;
+    padding:8px 24px;
+    background: linear-gradient(0deg, var(--red-dark) 0%, var(--red-light) 100%);
+    border:none;
+    border-radius:12px;
+    color:#fff;
+    font-family:'Plus Jakarta Sans', sans-serif;
+    font-size:16px;
+    font-weight:700;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    transition: transform .1s ease, filter .15s ease;
+  }
+
+  .submit-btn:active{ transform: scale(0.98); }
+  .submit-btn:disabled{ filter: grayscale(0.4) brightness(1.1); cursor:not-allowed; }
+
+  .submit-btn .spinner{
+    width:16px; height:16px;
+    border-radius:50%;
+    border:2px solid rgba(255,255,255,0.4);
+    border-top-color:#fff;
+    animation:spin .7s linear infinite;
+    display:none;
+    flex-shrink:0;
+  }
+
+  .submit-btn.loading .spinner{ display:inline-block; }
+  .submit-btn.loading .btn-label{ opacity:0.85; }
+
+  @keyframes spin{ to{ transform:rotate(360deg); } }
+
+  .help{
+    width:100%;
+    text-align:center;
+    font-family:'Poppins', sans-serif;
+    font-size: clamp(12px, 3.2vw, 14px);
+    color:var(--error);
+  }
+
+  .help a{ color:var(--error); text-decoration:underline; }
+
+  /* very short viewports (small landscape phones / split screen): trim vertical breathing room */
+  @media (max-height: 640px){
+    .logo-wrap{ padding-top: 12px; }
+    .logo{ width: clamp(120px, 32vw, 160px); }
+    .card{ gap:14px; padding: 18px 18px; }
+    form{ gap:10px; }
+  }
+
+  @media (min-width: 480px){
+    .screen{ justify-content:center; }
+    .spacer{ flex:0 0 24px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-plane"></div>
+
+<div class="screen">
+  <div class="logo-wrap">
+    <img class="logo" src="assets/logo.png" alt="Lion Group">
+  </div>
+
+  <div class="spacer"></div>
+
+  <div class="card">
+    <div class="card-head">
+      <h1>Login to your account</h1>
+      <p>Please input your birth date to validate your ID</p>
+    </div>
+
+    <form id="loginForm" novalidate>
+      <div class="field">
+        <div class="field-box">
+          <label for="idStaff">ID Staff</label>
+          <input type="text" id="idStaff" name="idStaff" inputmode="numeric" autocomplete="off" placeholder="240185" required>
+        </div>
+        <div class="error-msg" id="idStaffError"></div>
+      </div>
+
+      <div class="field">
+        <div class="field-box">
+          <label for="dob">Date of Birth</label>
+          <input type="date" id="dob" name="dob" required>
+        </div>
+        <div class="error-msg" id="dobError"></div>
+      </div>
+
+      <button type="submit" class="submit-btn" id="submitBtn">
+        <span class="spinner"></span>
+        <span class="btn-label">Submit</span>
+      </button>
+
+      <div class="help">
+        Need Help? <a href="tel:+6281377777777">+62 813 7777 7777</a>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  const form = document.getElementById('loginForm');
+  const idStaffInput = document.getElementById('idStaff');
+  const dobInput = document.getElementById('dob');
+  const idStaffError = document.getElementById('idStaffError');
+  const dobError = document.getElementById('dobError');
+  const submitBtn = document.getElementById('submitBtn');
+
+  dobInput.max = new Date().toISOString().split('T')[0];
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    let valid = true;
+
+    idStaffError.textContent = '';
+    dobError.textContent = '';
+
+    if (!idStaffInput.value.trim()) {
+      idStaffError.textContent = 'ID Staff wajib diisi';
+      valid = false;
+    }
+
+    if (!dobInput.value) {
+      dobError.textContent = 'Tanggal lahir wajib diisi';
+      valid = false;
+    }
+
+    if (!valid) return;
+
+    sessionStorageSafeSet('idStaff', idStaffInput.value.trim());
+    sessionStorageSafeSet('dob', dobInput.value);
+
+    submitBtn.classList.add('loading');
+    submitBtn.disabled = true;
+
+    setTimeout(function () {
+      window.location.href = 'home.html';
+    }, 500);
+  });
+
+  function sessionStorageSafeSet(key, value) {
+    try { sessionStorage.setItem(key, value); } catch (err) { /* no-op */ }
+  }
+</script>
+
+</body>
+</html>
