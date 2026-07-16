@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>Fun Run Registration</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<div class="reg-page" id="formScreen">
+
+  <div class="reg-header">
+    <button class="icon-btn" onclick="history.back()" style="background:#F3F4F6;">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M15 5l-7 7 7 7" stroke="#111827" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <div class="reg-title">Fun Run Registration</div>
+    <div class="spacer44"></div>
+  </div>
+
+  <div class="reg-sheet">
+
+    <!-- Participant 1 (self) -->
+    <div class="reg-field-group">
+      <div class="reg-field readonly">
+        <div class="reg-field-body">
+          <div class="reg-field-label">ID Karyawan 1</div>
+          <div class="reg-field-value" id="p1Id">240185</div>
+        </div>
+      </div>
+      <div class="reg-field readonly">
+        <div class="reg-field-body">
+          <div class="reg-field-label">Nama Karyawan 1</div>
+          <div class="reg-field-value" id="p1Name">Handias Yusuf N.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Category KM -->
+    <div class="reg-field-group">
+      <div class="field-heading">Select Fun Run Category</div>
+      <div class="pill-group" id="categoryGroup">
+        <div class="pill-btn" data-value="3 KM">3 KM</div>
+        <div class="pill-btn" data-value="5 KM">5 KM</div>
+      </div>
+    </div>
+
+    <!-- Additional participants -->
+    <div class="reg-field-group">
+      <div class="field-heading">Number of Additional Participant</div>
+      <div class="pill-group" id="paxGroup">
+        <div class="pill-btn" data-value="1">1 Pax</div>
+        <div class="pill-btn" data-value="2">2 Pax</div>
+      </div>
+    </div>
+
+    <div class="reg-terms">Dengan Klik <b>Daftar</b>, Anda telah membaca dan menyetujui <b>Syarat dan Ketentuan Kegiatan Fun Run</b></div>
+  </div>
+
+  <div class="reg-fixed-footer">
+    <button class="btn-register" id="submitBtn">Submit</button>
+  </div>
+</div>
+
+<!-- ============ CONFIRM MODAL ============ -->
+<div class="modal-overlay" id="confirmModal">
+  <div class="modal-card">
+    <button class="modal-close" id="modalCloseBtn">
+      <svg viewBox="0 0 16 16" fill="none"><path d="M4 4l8 8M12 4l-8 8" stroke="#000" stroke-width="1.2" stroke-linecap="round"/></svg>
+    </button>
+    <div class="modal-title">Data sudah sesuai?</div>
+    <div class="modal-body">Pastikan data sudah sesuai. Data yang sudah di-submit tidak dapat diubah kembali.</div>
+    <div class="modal-actions">
+      <button class="btn-modal-secondary" id="checkAgainBtn">Cek Lagi</button>
+      <button class="btn-modal-primary" id="confirmSubmitBtn">Ya, Submit</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function () {
+    try {
+      const idStaff = sessionStorage.getItem('idStaff');
+      if (idStaff) {
+        document.getElementById('p1Id').textContent = idStaff;
+        document.getElementById('p1Name').textContent = idStaff;
+      }
+    } catch (e) { /* no-op */ }
+
+    let selectedCategory = null;
+    let selectedPax = null;
+
+    function wirePillGroup(groupId, onSelect) {
+      const group = document.getElementById(groupId);
+      group.querySelectorAll('.pill-btn').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          group.querySelectorAll('.pill-btn').forEach(function (b) { b.classList.remove('selected'); });
+          btn.classList.add('selected');
+          onSelect(btn.dataset.value);
+        });
+      });
+    }
+
+    wirePillGroup('categoryGroup', function (v) { selectedCategory = v; });
+    wirePillGroup('paxGroup', function (v) { selectedPax = v; });
+
+    const modal = document.getElementById('confirmModal');
+    document.getElementById('submitBtn').addEventListener('click', function () {
+      if (!selectedCategory) { alert('Pilih kategori Fun Run dulu ya (3 KM / 5 KM).'); return; }
+      if (!selectedPax) { alert('Pilih jumlah additional participant dulu ya.'); return; }
+      modal.classList.add('open');
+    });
+
+    document.getElementById('modalCloseBtn').addEventListener('click', function () { modal.classList.remove('open'); });
+    document.getElementById('checkAgainBtn').addEventListener('click', function () { modal.classList.remove('open'); });
+
+    function formatRegTime() {
+      const d = new Date();
+      const months = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
+      const pad = function (n) { return n < 10 ? '0' + n : n; };
+      return pad(d.getDate()) + ' ' + months[d.getMonth()] + ' ' + d.getFullYear() + ', ' +
+        pad(d.getHours()) + ':' + pad(d.getMinutes()) + ':' + pad(d.getSeconds());
+    }
+
+    document.getElementById('confirmSubmitBtn').addEventListener('click', function () {
+      try {
+        const raw = sessionStorage.getItem('registeredSports');
+        const arr = raw ? JSON.parse(raw) : [];
+        arr.push({
+          sport: 'Fun Run',
+          subtitle: selectedCategory + ' Category',
+          status: 'Pending',
+          registeredAt: formatRegTime(),
+          participants: [
+            { name: document.getElementById('p1Name').textContent, id: document.getElementById('p1Id').textContent, division: '' }
+          ],
+          additionalPaxCount: parseInt(selectedPax, 10) || 0
+        });
+        sessionStorage.setItem('registeredSports', JSON.stringify(arr));
+      } catch (e) { /* no-op */ }
+
+      // TODO: replace with a real submit call to your backend, sending:
+      // { category: selectedCategory, additionalPax: selectedPax }
+      location.href = 'registration-sent.html?sport=' + encodeURIComponent('Fun Run');
+    });
+  })();
+</script>
+
+</body>
+</html>

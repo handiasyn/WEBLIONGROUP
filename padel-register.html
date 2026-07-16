@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>Padel Registration</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<div class="reg-page" id="formScreen">
+
+  <div class="reg-header">
+    <button class="icon-btn" onclick="history.back()" style="background:#F3F4F6;">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M15 5l-7 7 7 7" stroke="#111827" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <div class="reg-title">Padel Match Registration</div>
+    <div class="spacer44"></div>
+  </div>
+
+  <div class="reg-sheet">
+
+    <!-- Kategori Peserta -->
+    <div class="reg-field">
+      <div class="reg-field-body">
+        <select id="kategoriPeserta">
+          <option value="" disabled selected>Kategori Peserta</option>
+          <option>Pria</option>
+          <option>Wanita</option>
+          <option>Campuran</option>
+        </select>
+      </div>
+      <svg class="reg-field-chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+
+    <!-- Cluster Kerja -->
+    <div class="reg-field">
+      <div class="reg-field-body">
+        <select id="clusterKerja">
+          <option value="" disabled selected>Cluster Kerja</option>
+          <option>Cluster Ground Operation</option>
+          <option>Cluster Cabin Crew</option>
+          <option>Cluster Engineering</option>
+          <option>Cluster Corporate</option>
+          <option>Cluster IT</option>
+        </select>
+      </div>
+      <svg class="reg-field-chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+
+    <!-- Participant 1 (self) -->
+    <div class="reg-field-group">
+      <div class="reg-field readonly">
+        <div class="reg-field-body">
+          <div class="reg-field-label">ID Karyawan 1</div>
+          <div class="reg-field-value" id="p1Id">240185</div>
+        </div>
+      </div>
+      <div class="reg-field readonly">
+        <div class="reg-field-body">
+          <div class="reg-field-label">Nama Karyawan 1</div>
+          <div class="reg-field-value" id="p1Name">Handias Yusuf N.</div>
+        </div>
+      </div>
+      <div class="reg-field">
+        <div class="reg-field-body">
+          <select id="level1">
+            <option value="" disabled selected>Level Player</option>
+            <option>Beginner</option>
+            <option>Novice</option>
+            <option>Intermediate</option>
+            <option>Advanced</option>
+          </select>
+        </div>
+        <svg class="reg-field-chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="reg-field">
+        <div class="reg-field-body">
+          <input type="text" id="racket1" placeholder="Merk Raket Saat Ini">
+        </div>
+      </div>
+    </div>
+
+    <!-- Captain phone -->
+    <div class="reg-field">
+      <div class="reg-field-body">
+        <input type="tel" id="captainPhone" placeholder="No HP Perwakilan untuk Grup WA" inputmode="tel">
+      </div>
+    </div>
+
+    <!-- Participant 2 (partner) -->
+    <div class="reg-field-group">
+      <div class="reg-field editable-id">
+        <div class="reg-field-body">
+          <div class="reg-field-label">ID Karyawan 2</div>
+          <input type="text" id="p2Id" inputmode="numeric" placeholder="Masukkan ID Karyawan pasangan">
+        </div>
+      </div>
+      <div class="reg-field editable-id">
+        <div class="reg-field-body">
+          <div class="reg-field-label">Nama Peserta 2</div>
+          <input type="text" id="p2Name" placeholder="Nama lengkap pasangan">
+        </div>
+      </div>
+      <div class="reg-field">
+        <div class="reg-field-body">
+          <select id="level2">
+            <option value="" disabled selected>Level Player</option>
+            <option>Beginner</option>
+            <option>Novice</option>
+            <option>Intermediate</option>
+            <option>Advanced</option>
+          </select>
+        </div>
+        <svg class="reg-field-chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="reg-field">
+        <div class="reg-field-body">
+          <input type="text" id="racket2" placeholder="Merk Raket Saat Ini">
+        </div>
+      </div>
+    </div>
+
+    <div class="reg-terms">Dengan Klik <b>Daftar</b>, Anda telah membaca dan menyetujui <b>Syarat dan Ketentuan Pertandingan Padel</b></div>
+  </div>
+
+  <div class="reg-fixed-footer">
+    <button class="btn-register" id="submitBtn">Submit</button>
+  </div>
+</div>
+
+<!-- ============ CONFIRM MODAL ============ -->
+<div class="modal-overlay" id="confirmModal">
+  <div class="modal-card">
+    <button class="modal-close" id="modalCloseBtn">
+      <svg viewBox="0 0 16 16" fill="none"><path d="M4 4l8 8M12 4l-8 8" stroke="#000" stroke-width="1.2" stroke-linecap="round"/></svg>
+    </button>
+    <div class="modal-title">Data sudah sesuai?</div>
+    <div class="modal-body">Pastikan data sudah sesuai. Data yang sudah di-submit tidak dapat diubah kembali.</div>
+    <div class="modal-actions">
+      <button class="btn-modal-secondary" id="checkAgainBtn">Cek Lagi</button>
+      <button class="btn-modal-primary" id="confirmSubmitBtn">Ya, Submit</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function () {
+    try {
+      const idStaff = sessionStorage.getItem('idStaff');
+      if (idStaff) {
+        document.getElementById('p1Id').textContent = idStaff;
+        document.getElementById('p1Name').textContent = idStaff;
+      }
+    } catch (e) { /* no-op */ }
+
+    const modal = document.getElementById('confirmModal');
+    document.getElementById('submitBtn').addEventListener('click', function () {
+      const kategori = document.getElementById('kategoriPeserta').value;
+      const cluster = document.getElementById('clusterKerja').value;
+      const level1 = document.getElementById('level1').value;
+      const racket1 = document.getElementById('racket1').value.trim();
+      const phone = document.getElementById('captainPhone').value.trim();
+      const p2Id = document.getElementById('p2Id').value.trim();
+      const p2Name = document.getElementById('p2Name').value.trim();
+      const level2 = document.getElementById('level2').value;
+      const racket2 = document.getElementById('racket2').value.trim();
+
+      if (!kategori || !cluster || !level1 || !racket1 || !phone || !p2Id || !p2Name || !level2 || !racket2) {
+        alert('Lengkapi semua data dulu ya sebelum submit.');
+        return;
+      }
+      modal.classList.add('open');
+    });
+
+    document.getElementById('modalCloseBtn').addEventListener('click', function () { modal.classList.remove('open'); });
+    document.getElementById('checkAgainBtn').addEventListener('click', function () { modal.classList.remove('open'); });
+
+    function formatRegTime() {
+      const d = new Date();
+      const months = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
+      const pad = function (n) { return n < 10 ? '0' + n : n; };
+      return pad(d.getDate()) + ' ' + months[d.getMonth()] + ' ' + d.getFullYear() + ', ' +
+        pad(d.getHours()) + ':' + pad(d.getMinutes()) + ':' + pad(d.getSeconds());
+    }
+
+    document.getElementById('confirmSubmitBtn').addEventListener('click', function () {
+      const cluster = document.getElementById('clusterKerja').value;
+      const kategori = document.getElementById('kategoriPeserta').value;
+      const participants = [
+        { name: document.getElementById('p1Name').textContent, id: document.getElementById('p1Id').textContent, division: cluster },
+        { name: document.getElementById('p2Name').value.trim() || 'Peserta 2', id: document.getElementById('p2Id').value.trim() || '-', division: cluster }
+      ];
+
+      try {
+        const raw = sessionStorage.getItem('registeredSports');
+        const arr = raw ? JSON.parse(raw) : [];
+        arr.push({
+          sport: 'Padel',
+          subtitle: (kategori || 'Campuran') + ' Double',
+          status: 'Pending',
+          registeredAt: formatRegTime(),
+          participants: participants
+        });
+        sessionStorage.setItem('registeredSports', JSON.stringify(arr));
+      } catch (e) { /* no-op */ }
+
+      // TODO: replace with a real submit call to your backend
+      location.href = 'registration-sent.html?sport=' + encodeURIComponent('Padel');
+    });
+  })();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>Registration Sent - Lion Group</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<style>
+  .rs-page{
+    max-width:480px;
+    margin:0 auto;
+    min-height:100dvh;
+    background:#DD0E14;
+    display:flex;
+    flex-direction:column;
+  }
+  .rs-header{
+    padding: calc(21px + var(--safe-t)) 16px 19px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+  }
+  .rs-header .rs-title{
+    flex:1;
+    text-align:center;
+    color:#fff;
+    font-size:16px;
+    font-weight:800;
+  }
+  .rs-header .spacer44{ width:44px; height:44px; flex-shrink:0; }
+  .rs-sheet{
+    flex:1;
+    background:#fff;
+    border-radius:20px 20px 0 0;
+    padding: 40px 16px calc(40px + var(--safe-b));
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:32px;
+  }
+</style>
+</head>
+<body>
+
+<div class="rs-page">
+
+  <div class="rs-header">
+    <button class="icon-btn" onclick="location.href='home.html'" style="background:#F3F4F6;">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M15 5l-7 7 7 7" stroke="#111827" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <div class="rs-title" id="rsHeaderTitle">Mini Soccer Match Registration</div>
+    <div class="spacer44"></div>
+  </div>
+
+  <div class="rs-sheet">
+    <div class="success-icon-wrap">
+      <div class="success-check">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M5 13l5 5L19 7" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="success-badge">Registration Sent</div>
+      <div class="success-event-name" id="rsSportName">Mini Soccer</div>
+      <div class="success-event-date" id="rsSportDate">September 20, 2024 at 9:00 AM</div>
+    </div>
+    <button class="btn-see-ticket" onclick="location.href='tickets.html'">See My Events</button>
+  </div>
+</div>
+
+<script>
+  (function () {
+    const params = new URLSearchParams(location.search);
+    let sport = params.get('sport');
+
+    // fall back to the most recently registered entry saved by the form
+    let sportDate = '';
+    try {
+      const raw = sessionStorage.getItem('registeredSports');
+      const arr = raw ? JSON.parse(raw) : [];
+      const last = arr[arr.length - 1];
+      if (last) {
+        if (!sport) sport = last.sport;
+        sportDate = last.registeredAt || '';
+      }
+    } catch (e) { /* no-op */ }
+
+    sport = sport || 'Event';
+
+    document.getElementById('rsHeaderTitle').textContent = sport + ' Match Registration';
+    document.getElementById('rsSportName').textContent = sport;
+    document.getElementById('rsSportDate').textContent = sportDate || 'Cek email/WhatsApp untuk info lebih lanjut';
+  })();
+</script>
+
+</body>
+</html>

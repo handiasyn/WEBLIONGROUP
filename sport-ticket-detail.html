@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>Detail Registrasi - Lion Group</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<div class="std-page">
+
+  <div class="std-header">
+    <div class="std-topbar">
+      <button class="icon-btn" onclick="location.href='tickets.html'">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M15 5l-7 7 7 7" stroke="#111827" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="std-header-title">
+        <div class="name" id="stdSportName">Mini Soccer Match</div>
+        <div class="sub" id="stdSportSubtitle">Men Team</div>
+      </div>
+      <div class="spacer44"></div>
+    </div>
+  </div>
+
+  <div class="std-body">
+
+    <div class="std-card">
+      <div class="std-status-row">
+        <div class="label">Status</div>
+        <div class="std-status-pill pending" id="stdStatusPill">Pending</div>
+      </div>
+      <div class="std-status-row">
+        <div class="label">Registration Time</div>
+        <div style="font-size:16px;color:#000" id="stdRegTime">-</div>
+      </div>
+    </div>
+
+    <div class="std-notice">
+      <div class="title">Pending Confirmation</div>
+      <div class="body">Your registration is awaiting confirmation from the sports event PIC.</div>
+    </div>
+
+    <div class="std-card">
+      <div class="std-participant-heading" id="stdParticipantHeading">Participant</div>
+      <div id="stdParticipantList"></div>
+      <div id="stdAdditionalBlock" style="display:none">
+        <div class="std-additional-label" style="margin-top:4px;">Additional Participant</div>
+        <div class="std-additional-value" id="stdAdditionalValue">-</div>
+      </div>
+    </div>
+
+  </div>
+    <div class="std-fixed-actions">
+        <button class="btn-outline-red" onclick="editRegistration()">Edit Registration</button>
+        <button class="btn-outline-red" onclick="cancelRegistration()">Cancel Registration</button>
+    </div>
+</div>
+
+
+
+<script>
+  function getRegisteredSports() {
+    try {
+      const raw = sessionStorage.getItem('registeredSports');
+      return raw ? JSON.parse(raw) : [];
+    } catch (e) { return []; }
+  }
+
+  function saveRegisteredSports(arr) {
+    try { sessionStorage.setItem('registeredSports', JSON.stringify(arr)); } catch (e) { /* no-op */ }
+  }
+
+  const params = new URLSearchParams(location.search);
+  const index = parseInt(params.get('index'), 10);
+  const list = getRegisteredSports();
+  const entry = list[index];
+
+  const formPageBySport = {
+    'Mini Soccer': 'minisoccer-register.html',
+    'Badminton': 'badminton-register.html',
+    'Padel': 'padel-register.html',
+    'Fun Run': 'funrun-register.html',
+    'Chess': 'chess-register.html'
+  };
+
+  if (!entry) {
+    document.querySelector('.std-body').innerHTML =
+      '<div style="padding:32px 16px;text-align:center;color:#696969;font-size:14px;">Data registrasi tidak ditemukan. Kembali ke <a href="tickets.html" style="color:#E21219;font-weight:600;">My Events</a>.</div>';
+  } else {
+    document.getElementById('stdSportName').textContent = entry.sport + ' Match';
+    if (entry.subtitle) {
+      document.getElementById('stdSportSubtitle').textContent = entry.subtitle;
+    } else {
+      document.getElementById('stdSportSubtitle').style.display = 'none';
+    }
+
+    const statusPill = document.getElementById('stdStatusPill');
+    const status = (entry.status || 'Pending');
+    statusPill.textContent = status;
+    statusPill.className = 'std-status-pill ' + status.toLowerCase();
+
+    document.getElementById('stdRegTime').textContent = entry.registeredAt || '-';
+
+    const participants = entry.participants || [];
+    document.getElementById('stdParticipantHeading').textContent =
+      participants.length > 1 ? participants.length + ' Participant' : 'Participant';
+
+    const listEl = document.getElementById('stdParticipantList');
+    listEl.innerHTML = participants.map(function (p) {
+      const initials = (p.name || '?').split(' ').map(function (w) { return w.charAt(0); }).slice(0, 2).join('').toUpperCase();
+      const metaParts = [p.id, p.division].filter(Boolean);
+      return '<div class="std-participant-row" style="margin-top:16px">' +
+        '<div class="std-avatar">' + initials + '</div>' +
+        '<div class="std-participant-info">' +
+          '<div class="std-participant-name">' + p.name + '</div>' +
+          '<div class="std-participant-meta">' + metaParts.join(' • ') + '</div>' +
+        '</div>' +
+      '</div>';
+    }).join('');
+
+    if (entry.additionalPaxCount) {
+      document.getElementById('stdAdditionalBlock').style.display = 'block';
+      document.getElementById('stdAdditionalValue').textContent = entry.additionalPaxCount + ' Person';
+    }
+  }
+
+  function editRegistration() {
+    if (!entry) return;
+    const page = formPageBySport[entry.sport];
+    if (page) {
+      location.href = page;
+    } else {
+      alert('Form edit untuk sport ini belum tersedia.');
+    }
+  }
+
+  function cancelRegistration() {
+    if (!entry) return;
+    const ok = confirm('Yakin mau batalin pendaftaran ' + entry.sport + '? Tindakan ini tidak bisa dibatalkan.');
+    if (!ok) return;
+    list.splice(index, 1);
+    saveRegisteredSports(list);
+    location.href = 'tickets.html';
+  }
+</script>
+
+</body>
+</html>

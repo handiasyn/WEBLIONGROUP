@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>Registrasi Event - Lion Group</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<!-- ============ FORM STATE ============ -->
+<div class="reg-page" id="formScreen">
+
+  <div class="reg-header">
+    <button class="icon-btn" onclick="history.back()" style="background:#F3F4F6;">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M15 5l-7 7 7 7" stroke="#111827" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <div class="reg-title" id="eventTitleHeader">HUT Lion Group - Main Event</div>
+    <div class="spacer44"></div>
+  </div>
+
+  <div class="reg-sheet">
+
+    <!-- Participant Detail -->
+    <div class="tshirt-block">
+      <div class="reg-section-title">Participant Detail</div>
+      <div class="participant-card">
+        <div class="participant-avatar" id="participantInitial">HY</div>
+        <div class="participant-info">
+          <div class="p-name" id="participantName">Handias Yusuf N.</div>
+          <div class="p-meta" id="participantMeta">240185 - Management Trainee</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- T-Shirt Size -->
+    <div class="tshirt-block">
+      <div class="tshirt-label">Choose T-Shirt Size :</div>
+
+      <div class="size-options" id="sizeOptions">
+        <div class="size-option" data-size="S">S</div>
+        <div class="size-option" data-size="M">M</div>
+        <div class="size-option" data-size="L">L</div>
+        <div class="size-option" data-size="XL">XL</div>
+        <div class="size-option" data-size="XXL">XXL</div>
+      </div>
+
+      <div class="size-dropdown" id="sizeChartToggle">
+        <span class="dd-label">T-shirt size Chart</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="size-chart-panel" id="sizeChartPanel">
+        <img src="assets/posters/tshirt-size-chart.jpg" alt="T-shirt Size Chart" onerror="this.src='https://placehold.co/311x252?text=Size+Chart'">
+      </div>
+
+      <!-- Add More Participant -->
+      <button class="btn-add-participant" id="addParticipantToggle">Add More Participant (Optional)</button>
+
+      <div class="participant-counter-panel" id="counterPanel">
+        <div class="counter-row-title">Add More Participant (Optional)</div>
+
+        <div class="counter-row">
+          <div class="counter-label">
+            <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="7" r="3.5" stroke="#FF0000" stroke-width="1.5"/><path d="M4.5 20a7.5 7.5 0 0 1 15 0" stroke="#FF0000" stroke-width="1.5"/></svg>
+            <span>Dewasa (&gt; 12 th)</span>
+          </div>
+          <button class="counter-btn" data-target="dewasa" data-action="dec">
+            <svg viewBox="0 0 16 2" fill="none"><rect width="16" height="2" rx="1" fill="#FF0000"/></svg>
+          </button>
+          <div class="counter-value" id="dewasaValue">0</div>
+          <button class="counter-btn" data-target="dewasa" data-action="inc">
+            <svg viewBox="0 0 16 16" fill="none"><rect y="7" width="16" height="2" rx="1" fill="#FF0000"/><rect x="7" width="2" height="16" rx="1" fill="#FF0000"/></svg>
+          </button>
+        </div>
+
+        <div class="counter-row">
+          <div class="counter-label">
+            <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="2.5" stroke="#FF0000" stroke-width="1.5"/><path d="M6.5 20a5.5 5.5 0 0 1 11 0" stroke="#FF0000" stroke-width="1.5"/></svg>
+            <span>Anak (&gt; 6 th)</span>
+          </div>
+          <button class="counter-btn" data-target="anak" data-action="dec">
+            <svg viewBox="0 0 16 2" fill="none"><rect width="16" height="2" rx="1" fill="#FF0000"/></svg>
+          </button>
+          <div class="counter-value" id="anakValue">0</div>
+          <button class="counter-btn" data-target="anak" data-action="inc">
+            <svg viewBox="0 0 16 16" fill="none"><rect y="7" width="16" height="2" rx="1" fill="#FF0000"/><rect x="7" width="2" height="16" rx="1" fill="#FF0000"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="reg-fixed-footer">
+    <div class="reg-terms">Dengan Klik <b>Submit</b>, Anda telah membaca dan menyetujui <b>Syarat dan Ketentuan Penyelegaraan Acara</b></div>
+    <button class="btn-register" id="submitBtn">Submit</button>
+  </div>
+</div>
+
+<!-- ============ CONFIRM MODAL ============ -->
+<div class="modal-overlay" id="confirmModal">
+  <div class="modal-card">
+    <button class="modal-close" id="modalCloseBtn">
+      <svg viewBox="0 0 16 16" fill="none"><path d="M4 4l8 8M12 4l-8 8" stroke="#000" stroke-width="1.2" stroke-linecap="round"/></svg>
+    </button>
+    <div class="modal-title">Data sudah sesuai?</div>
+    <div class="modal-body">Pastikan data sudah sesuai. Data yang sudah di-submit tidak dapat diubah kembali.</div>
+    <div class="modal-actions">
+      <button class="btn-modal-secondary" id="checkAgainBtn">Cek Lagi</button>
+      <button class="btn-modal-primary" id="confirmSubmitBtn">Ya, Submit</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SUCCESS STATE ============ -->
+<div class="success-screen" id="successScreen">
+  <div class="success-topbar">
+    <button class="icon-btn" onclick="location.href='home.html'">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M15 5l-7 7 7 7" stroke="#111827" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+  </div>
+  <div class="success-content">
+    <div class="success-icon-wrap">
+      <div class="success-check">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M5 13l5 5L19 7" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="success-badge">Registration Successful</div>
+      <div class="success-event-name" id="successEventName">HUT Lion Group</div>
+      <div class="success-event-date" id="successEventDate">September 20, 2024 at 9:00 AM</div>
+    </div>
+    <button class="btn-see-ticket" onclick="location.href='tickets.html'">See My Ticket</button>
+  </div>
+</div>
+
+<script>
+  (function () {
+    const params = new URLSearchParams(location.search);
+    const eventName = params.get('event') || 'HUT Lion Group - Main Event';
+    document.getElementById('eventTitleHeader').textContent = eventName;
+    document.getElementById('successEventName').textContent = eventName.split(' - ')[0];
+
+    // pull logged-in participant info if available (from login.html session)
+    try {
+      const idStaff = sessionStorage.getItem('idStaff');
+      if (idStaff) {
+        document.getElementById('participantName').textContent = idStaff;
+        document.getElementById('participantMeta').textContent = idStaff + ' - Staff';
+        document.getElementById('participantInitial').textContent = idStaff.charAt(0).toUpperCase();
+      }
+    } catch (e) { /* no-op, keep sample data */ }
+
+    // ---- size selection ----
+    let selectedSize = null;
+    document.querySelectorAll('.size-option').forEach(function (el) {
+      el.addEventListener('click', function () {
+        document.querySelectorAll('.size-option').forEach(function (o) { o.classList.remove('selected'); });
+        el.classList.add('selected');
+        selectedSize = el.dataset.size;
+      });
+    });
+
+    // ---- size chart toggle ----
+    const sizeToggle = document.getElementById('sizeChartToggle');
+    const sizePanel = document.getElementById('sizeChartPanel');
+    sizeToggle.addEventListener('click', function () {
+      sizeToggle.classList.toggle('open');
+      sizePanel.classList.toggle('open');
+    });
+
+    // ---- add participant toggle ----
+    const addBtn = document.getElementById('addParticipantToggle');
+    const counterPanel = document.getElementById('counterPanel');
+    addBtn.addEventListener('click', function () {
+      const isOpen = counterPanel.classList.toggle('open');
+      addBtn.textContent = isOpen ? 'Hide Additional Participant' : 'Add More Participant (Optional)';
+    });
+
+    // ---- counters ----
+    const counters = { dewasa: { value: 0, max: 1 }, anak: { value: 0, max: 2 } };
+    function renderCounter(key) {
+      document.getElementById(key + 'Value').textContent = counters[key].value;
+      document.querySelectorAll('[data-target="' + key + '"][data-action="dec"]').forEach(function (b) {
+        b.disabled = counters[key].value <= 0;
+      });
+      document.querySelectorAll('[data-target="' + key + '"][data-action="inc"]').forEach(function (b) {
+        b.disabled = counters[key].value >= counters[key].max;
+      });
+    }
+    document.querySelectorAll('.counter-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        const key = btn.dataset.target;
+        const action = btn.dataset.action;
+        if (action === 'inc' && counters[key].value < counters[key].max) counters[key].value++;
+        if (action === 'dec' && counters[key].value > 0) counters[key].value--;
+        renderCounter(key);
+      });
+    });
+    renderCounter('dewasa');
+    renderCounter('anak');
+
+    // ---- submit -> confirm modal ----
+    const modal = document.getElementById('confirmModal');
+    document.getElementById('submitBtn').addEventListener('click', function () {
+      if (!selectedSize) {
+        alert('Pilih ukuran T-Shirt dulu ya sebelum submit.');
+        return;
+      }
+      modal.classList.add('open');
+    });
+
+    document.getElementById('modalCloseBtn').addEventListener('click', function () { modal.classList.remove('open'); });
+    document.getElementById('checkAgainBtn').addEventListener('click', function () { modal.classList.remove('open'); });
+
+    function randomRegCode() {
+      const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+      let code = '';
+      for (let i = 0; i < 6; i++) code += chars.charAt(Math.floor(Math.random() * chars.length));
+      return code;
+    }
+
+    document.getElementById('confirmSubmitBtn').addEventListener('click', function () {
+      modal.classList.remove('open');
+      document.getElementById('formScreen').style.display = 'none';
+      document.getElementById('successScreen').classList.add('open');
+
+      // persist this registration so ticket-detail.html can render it
+      try {
+        sessionStorage.setItem('ticketEvent', eventName);
+        sessionStorage.setItem('ticketSize', selectedSize || '-');
+        sessionStorage.setItem('ticketDewasa', counters.dewasa.value);
+        sessionStorage.setItem('ticketAnak', counters.anak.value);
+        // only generate a new code the first time — keep it stable across ticket views
+        if (!sessionStorage.getItem('ticketRegCode')) {
+          sessionStorage.setItem('ticketRegCode', randomRegCode());
+        }
+      } catch (e) { /* no-op */ }
+
+      // TODO: replace with real submit call to your backend, sending:
+      // { idStaff, size: selectedSize, dewasa: counters.dewasa.value, anak: counters.anak.value }
+    });
+  })();
+</script>
+
+</body>
+</html>

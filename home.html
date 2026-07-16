@@ -26,25 +26,7 @@
     <!-- Grand Event -->
     <section class="section">
       <div class="section-title">Grand Event</div>
-      <div class="section-list">
-        <article class="event-card">
-          <img class="cover" src="assets/main-event-poster.png" alt="Lion Group Anniversary">
-          <div class="title">Lion Group Anniversary — Stronger Together, Better Forever</div>
-          <div class="meta-row">
-            <div class="meta-col">
-              <div class="meta-item">
-                <svg viewBox="0 0 16 16" fill="none"><rect x="2" y="2.5" width="12" height="11" rx="1.5" stroke="#CF0206" stroke-width="1"/><path d="M5.3 1.3v2.7M10.7 1.3v2.7M2 6h12" stroke="#CF0206" stroke-width="1"/></svg>
-                <span>25 September 2026</span>
-              </div>
-              <div class="meta-item">
-                <svg viewBox="0 0 16 16" fill="none"><path d="M8 14.7s5-4.3 5-8.4a5 5 0 1 0-10 0c0 4.1 5 8.4 5 8.4Z" stroke="#E21219" stroke-width="1"/><circle cx="8" cy="6.3" r="1.7" stroke="#E21219" stroke-width="1"/></svg>
-                <span>Komplek Balaraja Lion Group</span>
-              </div>
-            </div>
-            <button class="btn-detail" onclick="location.href='grandevent.html'">Detail</button>
-          </div>
-        </article>
-      </div>
+      <div class="section-list" id="grandEvent"></div>
     </section>
 
     <!-- Sport Event -->
@@ -97,103 +79,122 @@
   const calendarIcon = '<svg viewBox="0 0 16 16" fill="none"><rect x="2" y="2.5" width="12" height="11" rx="1.5" stroke="#CF0206" stroke-width="1"/><path d="M5.3 1.3v2.7M10.7 1.3v2.7M2 6h12" stroke="#CF0206" stroke-width="1"/></svg>';
   const pinIcon = '<svg viewBox="0 0 16 16" fill="none"><path d="M8 14.7s5-4.3 5-8.4a5 5 0 1 0-10 0c0 4.1 5 8.4 5 8.4Z" stroke="#E21219" stroke-width="1"/><circle cx="8" cy="6.3" r="1.7" stroke="#E21219" stroke-width="1"/></svg>';
 
+  // NOTE: every event has its own `image` path here — edit these one by one
+  // whenever the real poster is ready. Falls back to a placehold.co dummy
+  // via onerror until the real file exists at that path.
+  const grandEvent = [
+    {
+      title: 'Lion Group Anniversary — Stronger Together, Better Forever',
+      date: '25 September 2026',
+      place: 'Komplek Balaraja Lion Group',
+      image: 'assets/main-event-poster.png',
+      page: 'grandevent.html'
+    }
+  ];
+
   const sportEvents = [
-  {
-    title: 'Mini Soccer',
-    date: '29-30 Agustus 2026',
-    place: 'Lapangan H2 Icon Walk Cimone',
-    image: 'assets/soccer-poster.jpg',
-    page: 'Minisoccer.html'
-  },
-  {
-    title: 'Badminton',
-    date: '5-6 September 2026',
-    place: 'Tontowi Ahmad Badminton Hall BSD',
-    image: 'assets/badmin-poster.png',
-    page: 'Badminton.html'
-  },
-  {
-    title: 'Padel',
-    date: '12-13 September 2026',
-    place: 'Smash Padel Villa Melati Mas BSD',
-    image: 'assets/padel-poster.jpg',
-    page: 'padel.html'
-  },
-  {
-    title: 'Fun Run',
-    date: '19 September 2026',
-    place: 'Talaga Bestari',
-    image: 'assets/funrun-poster.jpg',
-    page: 'funrun.html'
-  },
-  {
-    title: 'Chess',
-    date: '19 September 2026',
-    place: 'Kantin LGTC Balaraja',
-    image: 'assets/chess-poster.jpg',
-    page: 'chess.html'
-  }
-];
+    {
+      title: 'Mini Soccer',
+      date: '29-30 Agustus 2026',
+      place: 'Lapangan H2 Icon Walk Cimone',
+      image: 'assets/soccer-poster.jpg',
+      page: 'minisoccer.html'
+    },
+    {
+      title: 'Badminton',
+      date: '5-6 September 2026',
+      place: 'Tontowi Ahmad Badminton Hall BSD',
+      image: 'assets/badmin-poster.png',
+      page: 'badminton.html'
+    },
+    {
+      title: 'Padel',
+      date: '12-13 September 2026',
+      place: 'Smash Padel Villa Melati Mas BSD',
+      image: 'assets/padel-poster.jpg',
+      page: 'padel.html'
+    },
+    {
+      title: 'Fun Run',
+      date: '19 September 2026',
+      place: 'Talaga Bestari',
+      image: 'assets/funrun-poster.jpg',
+      page: 'funrun.html'
+    },
+    {
+      title: 'Chess',
+      date: '19 September 2026',
+      place: 'Kantin LGTC Balaraja',
+      image: 'assets/chess-poster.jpg',
+      page: 'chess.html'
+    }
+  ];
 
   const socialEvents = [
-  {
-    title: 'Donor Darah',
-    date: 'TBD',
-    place: 'TBD',
-    image: 'assets/donordarah-poster.png',
-    page: 'donordarah.html'
-  },
-  {
-    title: 'Bakti Sosial',
-    date: 'TBD',
-    place: 'TBD',
-    image: 'assets/baktisosial-poster.png',
-    page: 'baktisosial.html'
+    {
+      title: 'Donor Darah',
+      date: 'TBD',
+      place: 'TBD',
+      image: 'assets/donor-poster.jpg',
+      page: 'donordarah.html'
+    },
+    {
+      title: 'Bakti Sosial',
+      date: 'TBD',
+      place: 'TBD',
+      image: 'assets/baksos-poster.png',
+      page: 'baktisosial.html'
+    }
+  ];
+
+  function placeholderFor(title) {
+    return "https://placehold.co/327x160?text=" + encodeURIComponent(title);
   }
-];
 
   function cardTemplate(ev) {
-  return `
-    <article class="event-card" onclick="location.href='${ev.page}'" style="cursor:pointer">
+    return `
+      <article class="event-card">
 
-      <div class="cover-wrap">
-        <img class="cover"
-             src="${ev.image}"
-             alt="${ev.title}">
+        <div class="cover-wrap">
+          <img class="cover"
+               src="${ev.image}"
+               alt="${ev.title}"
+               onerror="this.onerror=null;this.src='${placeholderFor(ev.title)}'">
 
-        <div class="cover-caption">
-          ${ev.title}
-        </div>
-      </div>
-
-      <div class="meta-row">
-
-        <div class="meta-col">
-
-          <div class="meta-item">
-            ${calendarIcon}
-            <span>${ev.date}</span>
+          <div class="cover-caption">
+            ${ev.title}
           </div>
-
-          <div class="meta-item">
-            ${pinIcon}
-            <span>${ev.place}</span>
-          </div>
-
         </div>
 
-        <button
-          class="btn-detail"
-          onclick="event.stopPropagation();location.href='${ev.page}'">
-          Detail
-        </button>
+        <div class="meta-row">
 
-      </div>
+          <div class="meta-col">
 
-    </article>
-  `;
-}
+            <div class="meta-item">
+              ${calendarIcon}
+              <span>${ev.date}</span>
+            </div>
 
+            <div class="meta-item">
+              ${pinIcon}
+              <span>${ev.place}</span>
+            </div>
+
+          </div>
+
+          <button
+            class="btn-detail"
+            onclick="location.href='${ev.page}'">
+            Detail
+          </button>
+
+        </div>
+
+      </article>
+    `;
+  }
+
+  document.getElementById('grandEvent').innerHTML = grandEvent.map(cardTemplate).join('');
   document.getElementById('sportEvents').innerHTML = sportEvents.map(cardTemplate).join('');
   document.getElementById('socialEvents').innerHTML = socialEvents.map(cardTemplate).join('');
 </script>

@@ -24,18 +24,10 @@
     display:flex;
     flex-direction:column;
     justify-content:space-between;
-    background: linear-gradient(180deg, #ED1C24 0%, #CF0206 100%);
-  }
-
-  .balance-card .decor-circle{
-    position:absolute;
-    right:-40px;
-    bottom:-40px;
-    width:180px;
-    height:180px;
-    border-radius:50%;
-    background: radial-gradient(circle at 35% 35%, rgba(255,255,255,0.25), rgba(255,255,255,0.02) 70%);
-    pointer-events:none;
+    background-image: url("assets/lion-pay-card.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
   }
 
   .balance-card .brand{
@@ -144,8 +136,7 @@
   <main class="content" style="padding-top:0;">
 
     <div class="balance-card">
-      <div class="decor-circle"></div>
-      <div class="brand">LION PAY</div>
+      <div class="brand"> </div>
       <div>
         <div class="balance-label">Saldo</div>
         <div class="balance-amount" id="balanceAmount">Rp 20.000</div>
